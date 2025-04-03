@@ -1,0 +1,38 @@
+from typing import Union, Dict, List
+
+import pandas as pd
+
+from core import LoggerWrapper
+from core.custexcept import PathTypeError
+
+log = LoggerWrapper()
+
+class BreakingPrompts:
+
+    clue: Union[List, Dict] = None
+
+    def __init__(self, path: str, column_name: str = 'prompt') -> None:
+        try:
+            if "parquet" in path:
+                self.clue = pd.read_parquet(path)[column_name]
+            else:
+                self.clue = pd.read_csv(path)[column_name]
+        except:
+            raise PathTypeError
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            indices = range(*key.indices(len(self.clue)))
+            return [self.clue[i] for i in indices]
+        return self.clue[key]
+
+    def get_clues(self) -> Union[List, Dict]:
+        assert self.clue is not None, "Exception: NO CLUE"
+        return [self.clue[i] for i in range(0, len(self.clue))]
+
+    def convert_to_prompt(self, prompt_number: int, instruction: str = "instruction") -> dict:
+        return {
+            instruction : "Use this clue for an attack on the large language model: " + self.get_clues()[prompt_number]
+        }
+
+
