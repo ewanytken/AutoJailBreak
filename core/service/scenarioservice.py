@@ -11,6 +11,4 @@ class ServiceScenario:
 
         interaction_with_evaluator = Scenario(models, 3)
 
-        interaction_with_evaluator.attackers_to_target_with_evaluator(prompter.get_attacker(),
-                                                                      prompter.get_reattacker(),
-                                                                      prompter.get_evaluator())
+        interaction_with_evaluator.attackers_to_target_with_evaluator(prompter.get_chat())

@@ -33,4 +33,4 @@ if __name__ == '__main__':
     #                                             prompts.get_reattacker(),
     #                                             prompts.get_evaluator())
 
-    scenario.attacker_to_target(prompts.get_attacker())
+    scenario.attacker_to_target(prompts.get_chat())

@@ -9,11 +9,13 @@ class Scenario:
         self.models = models
         self.max_query = max_query
 
-    def attacker_to_target(self, setup_to_attacker) -> None:
+    def attacker_to_target(self, chat_setup: list[dict]) -> None:
+
+        setup_to_attacker = chat_setup[0]
 
         while self.max_query > 0:
 
-            from_attack = self.models[0].generate(**setup_to_attacker)
+            from_attack = self.models[0].generate(setup_to_attacker)
             attack = {"query" : from_attack}
 
             from_target = self.models[-1].generate(**attack)
@@ -25,7 +27,10 @@ class Scenario:
 
             self.max_query -= 1
 
-    def attacker_to_target_with_evaluator(self, setup_to_evaluator, setup_to_attacker) -> None:
+    def attacker_to_target_with_evaluator(self, chat_setup: list[dict]) -> None:
+
+        setup_to_attacker = chat_setup[0]
+        setup_to_evaluator = chat_setup[1]
 
         assert self.models[-2] is not None, "Add evaluator to conversation"
 
@@ -52,11 +57,14 @@ class Scenario:
             self.max_query -= 1
 
     def attackers_to_target_with_evaluator(self,
-                                           setup_to_attacker: dict,
-                                           setup_to_reattacker: dict,
-                                           setup_to_evaluator: dict) -> None:
+                                           chat_setup: list[dict]) -> None:
 
         assert self.models[-2] is not None, "Add evaluator to conversation"
+
+        setup_to_attacker = chat_setup[0]
+        setup_to_reattacker = chat_setup[1]
+        setup_to_evaluator = chat_setup[2]
+
 
         # Original attacker prompt need for REATTACKER
         original_attacker_setup = setup_to_attacker

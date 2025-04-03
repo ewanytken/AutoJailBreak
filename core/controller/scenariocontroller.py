@@ -43,9 +43,7 @@ def elicit_scenario():
 
     scenario = Scenario(models.get_models(), 15)
 
-    scenario.attackers_to_target_with_evaluator(prompts.get_attacker(),
-                                                prompts.get_reattacker(),
-                                                prompts.get_evaluator())
+    # scenario.attackers_to_target_with_evaluator(prompts)
 
 
     return jsonify({'data': setup_to_model}), 200 if setup_to_model else 204

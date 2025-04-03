@@ -11,13 +11,12 @@ port = int(os.environ.get('PORT', 5001))
 def parameters_for_prompter():
 
     content = request.get_json()
+
     query = content['query']
     number_prompt= content['number_prompt']
 
     prompts = ServicePrompter(query)
-    prompt_to_set = [prompts.get_attacker(),
-                     prompts.get_reattacker(),
-                     prompts.get_evaluator()]
+    prompt_to_set = [prompts.get_chat()]
 
     return jsonify({"prompts" : prompt_to_set})
 
