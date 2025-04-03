@@ -6,11 +6,13 @@ import yaml
 
 class ServicePrompter:
 
-    chat_setup: Optional[dict] = None
+    chat_setup: Optional[dict[str, str]] = None
 
-    def __init__(self, query: Optional[str] = None,
-                       break_prompts: Optional[int] = None,
-                       setup_param: Optional[dict] = None) -> None:
+    def __init__(self,
+                 setup_param: Optional[dict[str, str]],
+                 query: Optional[str] = None,
+                 break_prompts: Optional[int] = None,
+                 ) -> None:
 
         self.set_chat(query, break_prompts, setup_param)
 
