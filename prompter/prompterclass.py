@@ -1,3 +1,4 @@
+from multipledispatch import dispatch
 from typing import Union, Dict, List
 
 import pandas as pd
@@ -30,9 +31,15 @@ class BreakingPrompts:
         assert self.clue is not None, "Exception: NO CLUE"
         return [self.clue[i] for i in range(0, len(self.clue))]
 
+    @dispatch(int, str)
     def convert_to_prompt(self, prompt_number: int, instruction: str = "instruction") -> dict:
         return {
             instruction : "Use this clue for an attack on the large language model: " + self.get_clues()[prompt_number]
         }
 
+    @dispatch(str, str)
+    def convert_to_prompt(self, prompt_attack: str, instruction: str = "instruction") -> dict:
+        return {
+            instruction : "Use this clue for an attack on the large language model: \n" + prompt_attack
+        }
 
