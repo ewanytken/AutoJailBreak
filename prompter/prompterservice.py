@@ -6,7 +6,7 @@ import yaml
 
 class ServicePrompter:
 
-    chat_setup: Optional[dict[str, str]] = None
+    chat_setup: Optional[dict[str, str]] = {}
 
     def __init__(self,
                  setup_param: Optional[dict[str, str]],
@@ -34,7 +34,6 @@ class ServicePrompter:
 
         if query is not None:
             self.chat_setup.update({"query": "<{}>".format(query)})
-
 
     def get_chat(self):
         return self.chat_setup

@@ -1,4 +1,5 @@
 from core import LoggerWrapper
+from prompter import ServicePrompter
 
 log = LoggerWrapper()
 
@@ -9,13 +10,13 @@ class Scenario:
         self.models = models
         self.max_query = max_query
 
-    def attacker_to_target(self, chat_setup: list[dict]) -> None:
+    def attacker_to_target(self, chat_setup: list[ServicePrompter]) -> None:
 
-        setup_to_attacker = chat_setup[0]
+        setup_to_attacker = chat_setup[0].get_chat()
 
         while self.max_query > 0:
 
-            from_attack = self.models[0].generate(setup_to_attacker)
+            from_attack = self.models[0].generate(**setup_to_attacker)
             attack = {"query" : from_attack}
 
             from_target = self.models[-1].generate(**attack)

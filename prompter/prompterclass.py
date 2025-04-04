@@ -32,6 +32,12 @@ class BreakingPrompts:
         return [self.clue[i] for i in range(0, len(self.clue))]
 
     @dispatch(int, str)
+    def convert_to_prompt(self, prompt_number: int, instruction: str) -> dict:
+        return {
+            instruction : "Use this clue for an attack on the large language model: " + self.get_clues()[prompt_number]
+        }
+
+    @dispatch(int)
     def convert_to_prompt(self, prompt_number: int, instruction: str = "instruction") -> dict:
         return {
             instruction : "Use this clue for an attack on the large language model: " + self.get_clues()[prompt_number]
@@ -43,3 +49,8 @@ class BreakingPrompts:
             instruction : "Use this clue for an attack on the large language model: \n" + prompt_attack
         }
 
+    @dispatch(str)
+    def convert_to_prompt(self, prompt_attack: str, instruction: str = "instruction") -> dict:
+        return {
+            instruction : "Use this clue for an attack on the large language model: \n" + prompt_attack
+        }

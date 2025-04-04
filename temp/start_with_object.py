@@ -41,6 +41,8 @@ if __name__ == '__main__':
     prompts_reattacker = ServicePrompter(reattacker)
     prompts_evaluator = ServicePrompter(evaluator)
 
+    prompts = [prompts_attacker, prompts_reattacker, prompts_evaluator]
+
     models = ServiceModel(models_parameters)
 
     scenario = Scenario(models.get_models(), 4)
@@ -49,4 +51,4 @@ if __name__ == '__main__':
     #                                             prompts_reattacker.get_chat(),
     #                                             prompts_evaluator.get_chat())
 
-    scenario.attacker_to_target(prompts_attacker.get_chat())
+    scenario.attacker_to_target(prompts)

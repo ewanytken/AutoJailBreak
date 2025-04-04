@@ -4,13 +4,10 @@ from core import TransformerWrapper
 
 class ServiceModel:
 
-    models: Optional[list] = None
+    models: Optional[list] = []
 
     def __init__(self, models_parameters: Optional[list]) -> None:
         self.model_by_aims(models_parameters)
-
-    def get_models(self):
-        return self.models
 
     def model_by_aims(self, models_parameters):
 
@@ -26,8 +23,8 @@ class ServiceModel:
                 "eos_token_id": tokenizer.eos_token_id
             }
 
-            if model['sys_tag'] is None:
-                model['sys_tag'] = ['role', 'instruction', 'constraint', 'query', 'response', 'request']
+            if model.get('sys_tag') is None:
+                model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request']})
 
             if model['max_new_tokens'] is None:
                 model['max_new_tokens'] = 555
@@ -36,3 +33,6 @@ class ServiceModel:
                                                   sys_tag=model['sys_tag'],
                                                   max_new_tokens=model['max_new_tokens'],
                                                   **parameter_to_generate))
+
+    def get_models(self):
+        return self.models
