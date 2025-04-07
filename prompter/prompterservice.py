@@ -14,12 +14,13 @@ class ServicePrompter:
                  break_prompts: Optional[int] = None,
                  ) -> None:
 
-        self.set_chat(query, break_prompts, setup_param)
+        self.set_chat(setup_param, query, break_prompts, )
 
     def set_chat(self,
+                 setup_params: Optional[dict],
                  query: str,
-                 break_prompt: int,
-                 setup_params: Optional[dict]):
+                 break_prompt: int
+                 ):
 
         assert setup_params is not None, "Set chat parameters"
 
