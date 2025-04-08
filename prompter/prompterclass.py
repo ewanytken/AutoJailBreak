@@ -5,6 +5,7 @@ import pandas as pd
 
 from core import LoggerWrapper
 from core.custexcept import PathTypeError
+from pathlib import Path
 
 log = LoggerWrapper()
 
@@ -12,9 +13,10 @@ class BreakingPrompts:
 
     clue: Union[List, Dict] = None
 
-    def __init__(self, path: str, column_name: str = 'prompt') -> None:
+    def __init__(self, file: str, column_name: str = 'prompt') -> None:
         try:
-            if "parquet" in path:
+            path = Path(__file__).parent.parent / file
+            if "parquet" in str(path):
                 self.clue = pd.read_parquet(path)[column_name]
             else:
                 self.clue = pd.read_csv(path)[column_name]

@@ -1,8 +1,9 @@
-import os.path
 from typing import Optional
 
 from prompter import BreakingPrompts
 import yaml
+from pathlib import Path
+
 
 class ServicePrompter:
 
@@ -14,7 +15,7 @@ class ServicePrompter:
                  break_prompts: Optional[int] = None,
                  ) -> None:
 
-        self.set_chat(setup_param, query, break_prompts, )
+        self.set_chat(setup_param, query, break_prompts)
 
     def set_chat(self,
                  setup_params: Optional[dict],
@@ -27,10 +28,13 @@ class ServicePrompter:
         self.chat_setup.update(setup_params)
 
         if break_prompt is not None:
-            with open('../config.yaml', 'r') as file:
+
+            config_path = Path(__file__).parent.parent / 'config.yaml'
+
+            with open(config_path, 'r') as file:
                 config = yaml.safe_load(file)
 
-            clue = BreakingPrompts(config['path']).convert_to_prompt(break_prompt)
+            clue = BreakingPrompts(config['file']).convert_to_prompt(break_prompt)
             self.chat_setup.update(clue)
 
         if query is not None:

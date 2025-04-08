@@ -28,8 +28,8 @@ def parameters_for_prompter():
 
     if content.get('query') is not None:
         query = content['query']
-    # if content.get('number_prompt') is not None:
-    #     number_prompt= content['number_prompt']
+    if content.get('number_prompt') is not None:
+        number_prompt= content['number_prompt']
 
     prompts = ServicePrompter(setup_param=attacker, query=query, break_prompts=number_prompt)
     prompt_to_set = [prompts.get_chat()]
