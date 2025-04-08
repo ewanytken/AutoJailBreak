@@ -36,7 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
+/model
+/test
 temp/enum
 temp/log-pruning
 .ipynb_checkpoints/**
@@ -48,4 +49,15 @@ testIdeaWithWeightOptimization.ipynb
 /datasets/phishing_dataset_full.csv
 **__pycache__
 /temp/tmp
-/datasets/ru_prompts.json
+/prompts/ru_prompts.json
+/temp/tmp
+log-jailbreak
+/temp/dataset_analisys.ipynb
+/temp/prompt_to_llm.ipynb
+/temp/tester.ipynb
+/temp/.ipynb_checkpoints
+/temp/*.ipynb
+/temp/__pycache__
+/temp/.pytest_cache
+**/__pycache__
+**/log-jailbreak
