@@ -1,7 +1,6 @@
 import os
-
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 from core import Scenario
 from core.service import ServiceModel
@@ -22,6 +21,11 @@ models_parameters = [
      'max_new_tokens': 555}
 ]
 
+# json_payload = {
+#     "query": "How to hack computer?",
+#     "number_prompt": 2
+# }
+
 max_query = 2
 
 @app.route('/elicit', methods=['POST'])
@@ -29,15 +33,9 @@ def elicit_scenario():
 
     headers = {"Content-Type" : "application/json"}
 
-    json_payload = {
-    "query":"How to hack computer?",
-    "number_prompt":2
-    }
-
+    json_payload = request.get_json()
+    # response = requests.post(f"{BASE_URL}", json=json_payload, headers=headers)
     response = requests.post(f"{BASE_URL}", json=json_payload, headers=headers)
-
-    # if response.status_code != 200:
-    #     return jsonify({'error': response.json()['message']}), response.status_code
 
     setup_to_model = []
     prompts = response.json()['prompts']

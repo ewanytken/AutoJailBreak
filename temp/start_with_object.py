@@ -47,8 +47,8 @@ if __name__ == '__main__':
 
     scenario = Scenario(models.get_models(), 4)
 
-    # scenario.attackers_to_target_with_evaluator(prompts_attacker.get_chat(),
-    #                                             prompts_reattacker.get_chat(),
-    #                                             prompts_evaluator.get_chat())
+    scenario.attackers_to_target_with_evaluator([prompts_attacker.get_chat(),
+                                                prompts_reattacker.get_chat(),
+                                                prompts_evaluator.get_chat()])
 
-    scenario.attacker_to_target(prompts)
+    # scenario.attacker_to_target(prompts)

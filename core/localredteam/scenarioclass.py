@@ -28,11 +28,11 @@ class Scenario:
 
             self.max_query -= 1
 
-            return [
-                "ATTACK: {}".format(from_attack),
-                "TARGET: {}".format(from_target),
-                "ATTEMPT: {}".format(self.max_query),
-            ]
+            # return [
+            #     "ATTACK: {}".format(from_attack),
+            #     "TARGET: {}".format(from_target),
+            #     "ATTEMPT: {}".format(self.max_query),
+            # ]
 
     def attacker_to_target_with_evaluator(self, chat_setup: list[dict]) -> None:
 

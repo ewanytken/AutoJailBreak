@@ -9,7 +9,7 @@ from pathlib import Path
 
 log = LoggerWrapper()
 
-class BreakingPrompts:
+class PromptsFromCSV:
 
     clue: Union[List, Dict] = None
 

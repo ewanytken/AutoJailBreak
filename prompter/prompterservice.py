@@ -1,9 +1,8 @@
 from typing import Optional
 
-from prompter import BreakingPrompts
+from prompter import PromptsFromCSV
 import yaml
 from pathlib import Path
-
 
 class ServicePrompter:
 
@@ -34,8 +33,12 @@ class ServicePrompter:
             with open(config_path, 'r') as file:
                 config = yaml.safe_load(file)
 
-            clue = BreakingPrompts(config['file']).convert_to_prompt(break_prompt)
-            self.chat_setup.update(clue)
+            path = config['file']
+
+            clue = PromptsFromCSV(path)
+            convert_clue = clue.convert_to_prompt(break_prompt)
+
+            self.chat_setup.update(convert_clue)
 
         if query is not None:
             self.chat_setup.update({"query": "<{}>".format(query)})

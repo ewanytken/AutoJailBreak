@@ -2,11 +2,11 @@ from transformers import AutoTokenizer
 
 from core import Scenario
 from core import TransformerWrapper
-from prompter import BreakingPrompts
+from prompter import PromptsFromCSV
 
-path = "../prompts/jailbreak_prompts_2023_05_07.csv"
+path = "prompts/jailbreak_prompts_2023_05_07.csv"
 
-prompts = BreakingPrompts(path=path)
+prompts = PromptsFromCSV(file=path)
 clue = prompts.convert_to_prompt(2)
 
 name_model = "Felladrin/TinyMistral-248M-Chat-v3"
@@ -71,4 +71,4 @@ if __name__ == "__main__":
 
 
         interaction_with_evaluator = Scenario(models, 3)
-        interaction_with_evaluator.attackers_to_target_with_evaluator(setup_to_attacker_one, setup_to_attacker_two, setup_to_evaluator)
+        interaction_with_evaluator.attackers_to_target_with_evaluator([setup_to_attacker_one, setup_to_attacker_two, setup_to_evaluator])
