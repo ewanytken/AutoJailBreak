@@ -9,7 +9,10 @@ class ServiceModel:
     def __init__(self, models_parameters: Optional[list]) -> None:
         self.model_by_aims(models_parameters)
 
-    def model_by_aims(self, models_parameters):
+    def __len__(self):
+        return len(self.models)
+
+    def model_by_aims(self, models_parameters: Optional[list]) -> None:
 
         for model in models_parameters:
 
