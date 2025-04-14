@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 
-from prompter import StartPromptForModel
+from prompter import StartPromptForModel, PromptServiceBuilder
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 5001))
@@ -31,8 +31,16 @@ def parameters_for_prompter():
     if content.get('number_prompt') is not None:
         number_prompt= content['number_prompt']
 
-    prompts = StartPromptForModel(setup_param=attacker, query=query, break_prompts=number_prompt)
-    prompt_to_set = [prompts.get_chat()]
+    attacker_prompt = StartPromptForModel(dict_setup=attacker, query=query, harmful_prompt=number_prompt)
+    reattacker_prompt = StartPromptForModel(dict_setup=reattacker)
+    evaluator_prompt = StartPromptForModel(dict_setup=evaluator)
+
+    start_reattacker = StartPromptForModel(reattacker)
+    start_attacker = StartPromptForModel(attacker, query, 2)
+    start_evaluator = StartPromptForModel(evaluator)
+    prompter = PromptServiceBuilder().set_attacker(start_attacker).set_attacker(start_reattacker).set_evaluator(start_evaluator).build()
+
+    prompt_to_set = [attacker_prompt.get_chat(), reattacker_prompt.get_chat(), evaluator_prompt.get_chat()]
 
     return jsonify({"prompts" : prompt_to_set})
 

@@ -6,17 +6,17 @@ from pathlib import Path
 
 class StartPromptForModel:
 
-    chat_start: Optional[dict[str, str]] = {}
-
     def __init__(self,
                  dict_setup: Optional[dict[str, str]],
                  query: Optional[dict[str, str]] = None,
                  harmful_prompt: Optional[int] = None ) -> None:
 
-        self.set_chat(dict_setup, query, harmful_prompt)
+        self.chat_start: Optional[dict[str, str]] = {}
+
+        self.set_chat(dict_setup, query,  harmful_prompt)
 
     def __str__(self):
-        return '|| '.join([value for key, value in self.chat_start.items()])
+        return ' ;\n '.join([value for key, value in self.chat_start.items()])
 
     def set_chat(self,
                  dict_setup: Optional[dict[str, str]],

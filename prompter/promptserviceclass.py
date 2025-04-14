@@ -11,9 +11,9 @@ class PromptService:
     def __str__(self):
 
         models = [
-            f"Attackers: {', '.join(self.attackers) if self.attackers else 'None'}"
-            f"Targets: {', '.join(self.targets) if self.targets else 'None'}"
-            f"Evaluators: {', '.join(self.evaluators) if self.evaluators else 'None'}"
+            f"ATTACKERS:\n {'; '.join([str(x) for x in self.attackers]) if self.attackers else 'None'}",
+            f"TARGETS:\n {'; '.join([str(x) for x in self.targets]) if self.targets else 'None'}",
+            f"EVALUATORS:\n {'; '.join([str(x) for x in self.evaluators]) if self.evaluators else 'None'}"
         ]
         return "\n".join(models)
 
