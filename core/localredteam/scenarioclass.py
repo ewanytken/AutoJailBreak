@@ -9,10 +9,11 @@ class Scenario:
         self.models = models
         self.max_query = max_query
 
-    def attacker_to_target(self, chat_setup: list) -> list[str] | None:
+    def attacker_to_target(self, chat_setup: list) -> dict[str, str] | None:
 
         # setup_to_attacker = chat_setup[0].get_chat()
         setup_to_attacker = chat_setup[0]
+        result = {}
 
         while self.max_query > 0:
 
@@ -26,18 +27,19 @@ class Scenario:
             log("TARGET: {}".format(from_target))
             log("ATTEMPT: {}".format(self.max_query))
 
+            result.update({"ATTACK {}".format(self.max_query): "{}".format(from_attack)})
+            result.update({"TARGET {}".format(self.max_query): "{}".format(from_target)})
+
             self.max_query -= 1
 
-            # return [
-            #     "ATTACK: {}".format(from_attack),
-            #     "TARGET: {}".format(from_target),
-            #     "ATTEMPT: {}".format(self.max_query),
-            # ]
+        return result
 
-    def attacker_to_target_with_evaluator(self, chat_setup: list[dict]) -> None:
+    def attacker_to_target_with_evaluator(self, chat_setup: list[dict]) -> dict[str, str] | None:
 
         setup_to_attacker = chat_setup[0]
         setup_to_evaluator = chat_setup[1]
+
+        result = {}
 
         assert self.models[-2] is not None, "Add evaluator to conversation"
 
@@ -61,7 +63,13 @@ class Scenario:
             log("EVALUATOR: {}".format(response_evaluator))
             log("ATTEMPT: {}".format(self.max_query))
 
+            result.update({"ATTACK {}".format(self.max_query): "{}".format(response_attack)})
+            result.update({"TARGET {}".format(self.max_query): "{}".format(response_target)})
+            result.update({"EVALUATOR {}".format(self.max_query): "{}".format(response_evaluator)})
+
             self.max_query -= 1
+
+        return result
 
     def attackers_to_target_with_evaluator(self,
                                            chat_setup: list[dict]) -> None:
