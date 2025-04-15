@@ -3,7 +3,7 @@ import logging
 class LoggerWrapper:
 
     def __init__(self, level=logging.INFO):
-        
+
         self.logger = logging.getLogger("iceBreaker")
         self.logger.setLevel(level)
         self.level = level
