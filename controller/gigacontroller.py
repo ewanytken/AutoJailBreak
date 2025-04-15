@@ -28,14 +28,16 @@ class GigaConnector:
         @self.app.route('/gigaconnect', methods=['POST'])
         def elicit_scenario():
 
-            BASE_URL = "http://localhost:8080/requestgiga"
+            answer_from_giga = rest_giga()
+
+            return jsonify({"GIGA answer: " : answer_from_giga}), 200 if answer_from_giga else 204
+
+        def rest_giga(BASE_URL: str = "http://localhost:8080/requestgiga"):
             headers = {"Content-Type": "application/json"}
             json_payload = request.get_json()
-
             response = requests.post(f"{BASE_URL}", json=json_payload, headers=headers)
-
             answer_from_giga = response.text
-            return jsonify({"GIGA answer: " : answer_from_giga}), 200 if answer_from_giga else 204
+            return answer_from_giga
 
     def handle_404(self, error):
         return jsonify({"message": "Not found {}".format(error)})

@@ -1,8 +1,8 @@
 from typing import Optional
 
 from core.custexcept import ParametersAssignError
-from modelservice import ServiceModel
-from core import LoggerWrapper
+from core import LoggerWrapper, Target
+from core.service import ServiceModel
 from prompter import PromptService
 
 log = LoggerWrapper()
@@ -18,37 +18,13 @@ class ServiceScenario:
         self.prompts = prompts
         self.max_query = max_query
 
+
     def set_max_query(self, max_query):
         self.max_query = max_query
 
-    def attacker_to_external_target(self) -> dict[str, str] | None:
-
-        start_to_attacker = None
-        attacker = None
-
-        try:
-            attacker = self.models.get_models()[0]
-            start_to_attacker = self.prompts.get_attackers()[0]
-
-        except ParametersAssignError as err:
-            log(f"{err}, models: {len(self.models), len(self.prompts)}")
-
-        result = {}
-
-        while self.max_query > 0:
-
-            from_attack = attacker.generate(**start_to_attacker)
-            attack = {"query": from_attack}
-
-
-            result.update({"ATTACK {}".format(self.max_query): "{}".format()})
-            result.update({"TARGET {}".format(self.max_query): "{}".format()})
-
-            self.max_query -= 1
-
-        return result
 
     def attacker_to_target(self) -> dict[str, str] | None:
+
         start_to_attacker = None
 
         attacker = None
@@ -58,7 +34,7 @@ class ServiceScenario:
             attacker = self.models.get_models()[0]
             target = self.models.get_models()[-1]
 
-            start_to_attacker = self.prompts.get_attackers()[0]
+            start_to_attacker = self.prompts.get_attackers()[0].get_chat()
 
         except ParametersAssignError as err:
             log(f"{err}, models: {len(self.models), len(self.prompts)}")
@@ -70,7 +46,8 @@ class ServiceScenario:
             from_attack = attacker.generate(**start_to_attacker)
             attack = {"query": from_attack}
 
-            from_target = target.generate(**attack)
+            from_target = target.generate(attack) ##difference from transformer **
+
             start_to_attacker = {"query": from_target}
 
             log("ATTACK: {}".format(from_attack))

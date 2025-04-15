@@ -71,8 +71,7 @@ class Scenario:
 
         return result
 
-    def attackers_to_target_with_evaluator(self,
-                                           chat_setup: list[dict]) -> None:
+    def attackers_to_target_with_evaluator(self, chat_setup: list[dict]) -> None:
 
         assert self.models[-2] is not None, "Add evaluator to conversation"
 

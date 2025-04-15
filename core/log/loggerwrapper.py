@@ -3,16 +3,17 @@ import logging
 class LoggerWrapper:
 
     def __init__(self, level=logging.INFO):
-        self.logger = logging.getLogger(str(__package__))
-        self.logger.setLevel(level)
         
-        handlerFile = logging.FileHandler("log-jailbreak", mode='w')
-        handlerConsole = logging.StreamHandler()
+        self.logger = logging.getLogger("iceBreaker")
+        self.logger.setLevel(level)
         self.level = level
 
         formatter = logging.Formatter(f"%(asctime)s %(name)s %(levelname)s %(message)s")
 
+        handlerFile = logging.FileHandler("log-jailbreak", mode='w')
         handlerFile.setFormatter(formatter)
+
+        handlerConsole = logging.StreamHandler()
         handlerConsole.setFormatter(formatter)
 
         self.logger.addHandler(handlerFile)

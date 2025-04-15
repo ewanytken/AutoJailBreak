@@ -1,6 +1,7 @@
 from typing import Optional
 from transformers import AutoTokenizer
-from core import TransformerWrapper
+from core import TransformerWrapper, Target
+
 
 class ServiceModel:
 
@@ -11,6 +12,9 @@ class ServiceModel:
 
     def __len__(self):
         return len(self.models)
+
+    def __call__(self, target, *args, **kwargs):
+        self.models.insert(len(self.models), target)
 
     def model_by_aims(self, models_parameters: Optional[list]) -> None:
 
@@ -39,3 +43,6 @@ class ServiceModel:
 
     def get_models(self):
         return self.models
+
+    def add_external_model(self, target: Target) -> None:
+        self.models.insert(len(self.models), target)
