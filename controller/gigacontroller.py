@@ -1,56 +1,50 @@
 import json
 import os
+from typing import Optional
 
 from flask import Flask, jsonify, request, Response
 import requests
 
+from core import Attacker
+
+
 class GigaConnector:
 
-    action = None
-
-    def __init__(self, action=None):
+    def __init__(self, attacker: Optional[Attacker], java_service: str = "http://localhost:8080/requestgiga"):
 
         self.app = Flask(__name__)
         self.port = int(os.environ.get('PORT', 5005))
-
-        self.action = action
-
-        self.app.register_error_handler(404, self.handle_404)
+        self.java_service = java_service
+        self.attacker = attacker
 
         self.setup_routes()
-
-    def __call__(self, *args, **kwargs):
-        self.action()
-        # return Response(status=200, headers={})
 
     def setup_routes(self):
 
         @self.app.route('/gigaconnect', methods=['POST'])
-        def elicit_scenario():
+        def connection():
 
-            answer_from_giga = rest_giga()
-
-            return jsonify({"GIGA answer: " : answer_from_giga}), 200 if answer_from_giga else 204
-
-        def rest_giga(BASE_URL: str = "http://localhost:8080/requestgiga"):
-            headers = {"Content-Type": "application/json"}
             json_payload = request.get_json()
-            response = requests.post(f"{BASE_URL}", json=json_payload, headers=headers)
-            answer_from_giga = response.text
-            return answer_from_giga
 
-    def handle_404(self, error):
-        return jsonify({"message": "Not found {}".format(error)})
+            requests.post(f"{self.java_service}",
+                          json=json_payload,
+                          headers={"Content-Type": "application/json"})
 
-    def add_endpoint(self, endpoint=None, endpoint_name=None, handler=None):
-        self.app.add_url_rule(endpoint, endpoint_name, handler, methods=['POST'])
+
+        @self.app.route('/gigaanswer', methods=['POST'])
+        def get_answer():
+
+            json_payload = request.get_json()
+
+            attacker_answer = self.attacker(**json_payload)
+            requests.post(f"{self.java_service}",
+                                     json={"query": attacker_answer},
+                                     headers={"Content-Type": "application/json"})
 
     def start(self):
         self.app.run(host='0.0.0.0', port=self.port, debug=True)
 
-def action():
-    return jsonify({"message": "ACTION"})
-
-
-app_instance = GigaConnector("Wrapper")
-app_instance.start()
+if __name__ == '__main__':
+    attacker = Attacker()
+    app_instance = GigaConnector(attacker)
+    app_instance.start()
