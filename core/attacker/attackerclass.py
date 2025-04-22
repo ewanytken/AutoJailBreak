@@ -32,5 +32,5 @@ class Attacker:
                                         max_new_tokens=parameters_model['max_new_tokens'],
                                         **parameter_to_generate)
 
-    def __call__(self, *args, **kwargs):
-        return self.model.generate(**kwargs)
+    def __call__(self, kwargs):
+        return self.model.generate(kwargs)

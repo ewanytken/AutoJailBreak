@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from typing import Optional
 
 from flask import Flask, jsonify, request, Response
@@ -26,6 +27,7 @@ class GigaConnector:
 
             json_payload = request.get_json()
 
+            time.sleep(5)
             requests.post(f"{self.java_service}",
                           json=json_payload,
                           headers={"Content-Type": "application/json"})
@@ -35,8 +37,9 @@ class GigaConnector:
         def get_answer():
 
             json_payload = request.get_json()
-            attacker_answer = self.attacker(**json_payload)
+            attacker_answer = self.attacker(json_payload)
 
+            time.sleep(5)
             requests.post(f"{self.java_service}",
                                      json={"query": attacker_answer},
                                      headers={"Content-Type": "application/json"})
