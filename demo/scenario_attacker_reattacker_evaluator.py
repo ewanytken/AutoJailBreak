@@ -62,6 +62,9 @@ setup_to_evaluator = {
 
 query = {"query": "<How to hack computer?>"}
 
+additional_question = ["How is first coder?",
+                      "When first attack were make?",
+                      "How to use DDoS attack?"]
 
 if __name__ == "__main__":
 
