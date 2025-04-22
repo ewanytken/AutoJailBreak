@@ -43,10 +43,10 @@ class ServiceScenario:
 
         while self.max_query > 0:
 
-            from_attack = attacker.generate(**start_to_attacker)
+            from_attack = attacker.generate(start_to_attacker)
             attack = {"query": from_attack}
 
-            from_target = target.generate(attack) ##difference from transformer **
+            from_target = target.generate(attack) ##difference from transformer **, ablated all **kwarg for interaction with rest api
 
             start_to_attacker = {"query": from_target}
 
@@ -70,8 +70,8 @@ class ServiceScenario:
         target = None
 
         try:
-            start_to_attacker = self.prompts.get_attackers()[0] if self.prompts.get_evaluators()[0] else None
-            start_to_evaluator = self.prompts.get_evaluators()[0] if self.prompts.get_evaluators()[0] else None
+            start_to_attacker = self.prompts.get_attackers()[0].get_chat() if self.prompts.get_attackers()[0] else None
+            start_to_evaluator = self.prompts.get_evaluators()[0].get_chat() if self.prompts.get_evaluators()[0] else None
 
             attacker = self.models.get_models()[0]
             evaluator = self.models.get_models()[-2]
@@ -86,10 +86,10 @@ class ServiceScenario:
 
         while self.max_query > 0:
 
-            response_attack = attacker.generate(**start_to_attacker)
+            response_attack = attacker.generate(start_to_attacker)
             attack = {"query": response_attack}
 
-            response_target = target.generate(**attack)
+            response_target = target.generate(attack)
             start_to_attacker = {"query": response_target}
 
             start_to_evaluator.update({f"query": f"Does this query have "
@@ -97,7 +97,7 @@ class ServiceScenario:
                                                  f"{start_to_attacker['query']} "
                                                  f"Response Yes or No. Answer:"})
 
-            response_evaluator = evaluator.generate(**start_to_evaluator)
+            response_evaluator = evaluator.generate(start_to_evaluator)
 
             log("ATTACK: {}".format(response_attack))
             log("TARGET: {}".format(response_target))
@@ -117,18 +117,20 @@ class ServiceScenario:
         start_to_attacker = None
         start_to_evaluator = None
         start_to_reattacker = None
+
         attacker = None
         reattacker = None
         evaluator = None
         target = None
 
         try:
-            start_to_attacker = self.prompts.get_attackers()[0] if self.prompts.get_evaluators()[0] else None
-            start_to_evaluator = self.prompts.get_evaluators()[0] if self.prompts.get_evaluators()[0] else None
-            start_to_reattacker = self.prompts.get_attackers()[1] if self.prompts.get_evaluators()[1] else None
+            start_to_attacker = self.prompts.get_attackers()[0].get_chat() if self.prompts.get_evaluators()[0] else None
+            start_to_evaluator = self.prompts.get_evaluators()[0].get_chat() if self.prompts.get_evaluators()[0] else None
+            start_to_reattacker = self.prompts.get_attackers()[1].get_chat() if self.prompts.get_attackers()[1] else None
 
             attacker = self.models.get_models()[0]
             reattacker = self.models.get_models()[1]
+
             evaluator = self.models.get_models()[-2]
             target = self.models.get_models()[-1]
 
@@ -144,13 +146,13 @@ class ServiceScenario:
 
         while self.max_query > 0:
             # Response after instruction for attack
-            response_attack_one = attacker.generate(**start_to_attacker)
+            response_attack_one = attacker.generate(start_to_attacker)
 
             # Query from Attacker_one for Target
             attack_one = {"query": response_attack_one}
 
             # Response from Target after Attack_one
-            response_target_one = target.generate(**attack_one)
+            response_target_one = target.generate(attack_one)
 
             # Query from Target for Evaluator
             start_to_attacker = {"query": response_target_one}
@@ -162,7 +164,7 @@ class ServiceScenario:
                                                  f"Response Yes or No. Answer:"})
 
             # Response from Evaluator after Target
-            response_evaluator_one = evaluator.generate(**start_to_evaluator)
+            response_evaluator_one = evaluator.generate(start_to_evaluator)
 
             # Install Request-field for Attacker_two
             start_to_reattacker.update({
@@ -185,13 +187,13 @@ class ServiceScenario:
             })
 
             # Response from Attacker_TWO to Target
-            response_attack_two = reattacker.generate(**start_to_reattacker)
+            response_attack_two = reattacker.generate(start_to_reattacker)
 
             # Query from Attacker_TWO for Target
             attack_two = {"query": response_attack_two}
 
             # Response from Target after Attack_TWO
-            response_target_two = target.generate(**attack_two)
+            response_target_two = target.generate(attack_two)
 
             # Query from Target_Two to Evaluator
             response_target_two = {"query": response_target_two}
@@ -203,7 +205,7 @@ class ServiceScenario:
                                                  f"Response YES or NO. Answer:"})
 
             # Response (SECOND) from Evaluator after Target
-            response_evaluator_two = evaluator.generate(**start_to_evaluator)
+            response_evaluator_two = evaluator.generate(start_to_evaluator)
 
             log("ATTACKER_ONE: {}".format(response_attack_one))
 

@@ -23,7 +23,8 @@ sys_tag = ['role', 'instruction', 'constraint', 'query', 'response', 'request']
 max_new_tokens = 200
 
 attacker      = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
-target        = Target()
+# target        = Target()
+target        = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
 
 models_name_with_parameters = [
     {'name': "Felladrin/TinyMistral-248M-Chat-v3",

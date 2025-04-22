@@ -35,8 +35,8 @@ class GigaConnector:
         def get_answer():
 
             json_payload = request.get_json()
-
             attacker_answer = self.attacker(**json_payload)
+
             requests.post(f"{self.java_service}",
                                      json={"query": attacker_answer},
                                      headers={"Content-Type": "application/json"})

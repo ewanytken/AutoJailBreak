@@ -24,9 +24,9 @@ class TransformerWrapper(BaseComponent):
 
         assert len(self.sys_tag) > 0, "Enter behavior for template: ROLE, QUERY and other"
 
-    def generate(self, **kwargs):
+    def generate(self, kwargs):
 
-        available_variable = TransformerWrapper.parse_for_template(self.sys_tag, **kwargs)
+        available_variable = TransformerWrapper.parse_for_template(self.sys_tag, kwargs)
 
         template_to_chat = ChatTemplate.template(*available_variable)
 
@@ -50,7 +50,7 @@ class TransformerWrapper(BaseComponent):
         return inputs
 
     @staticmethod
-    def parse_for_template(sys_tag: list, **kwargs) -> list:
+    def parse_for_template(sys_tag: list, kwargs: dict) -> list:
         available_variable = []
 
         for key, value in kwargs.items():

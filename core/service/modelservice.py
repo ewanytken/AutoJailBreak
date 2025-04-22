@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union, Any
 from transformers import AutoTokenizer
 from core import TransformerWrapper, Target
 
@@ -44,5 +44,5 @@ class ServiceModel:
     def get_models(self):
         return self.models
 
-    def add_external_model(self, target: Target) -> None:
+    def add_external_model(self, target: Union[Target, Any]) -> None:
         self.models.insert(len(self.models), target)
