@@ -1,4 +1,6 @@
 import json
+import time
+
 import requests
 from multipledispatch import dispatch
 
@@ -21,8 +23,10 @@ class Target:
     @dispatch(dict)
     def generate(self, json_payload) -> str:
         self.json_payload = json_payload
+        time.sleep(3)
         return requests.post(f"{self.BASE_URL}", json=self.json_payload, headers={"Content-Type": "application/json"}).text
 
     @dispatch()
     def generate(self) -> str:
+        time.sleep(3)
         return requests.post(f"{self.BASE_URL}", json=self.json_payload, headers={"Content-Type": "application/json"}).text

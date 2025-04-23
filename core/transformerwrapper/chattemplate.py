@@ -48,6 +48,27 @@ class ChatTemplate:
         return chat
 
     @staticmethod
+    @dispatch(str, str, str)
+    def template(role:        str,
+                 instruction: str,
+                 constraint:  str,) -> Union[Dict[str, str], List[Dict[str, str]]]:
+        chat = [
+            {
+                "role": "system",
+                "content": "{}".format(role)
+            },
+            {
+                "role": "system",
+                "content": "<instruction> {} </instruction>".format(instruction)
+            },
+            {
+                "role": "system",
+                "content": "<constraint> {} </constraint>".format(constraint)
+            }
+        ]
+        return chat
+
+    @staticmethod
     @dispatch(str, str, str, str, str)
     def template(role:        str,
                  instruction: str,

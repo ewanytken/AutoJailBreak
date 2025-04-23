@@ -31,7 +31,7 @@ class ServiceModel:
             }
 
             if model.get('sys_tag') is None:
-                model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request']})
+                model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request', 'clue']})
 
             if model['max_new_tokens'] is None:
                 model['max_new_tokens'] = 555

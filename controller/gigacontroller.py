@@ -49,5 +49,6 @@ class GigaConnector:
 
 if __name__ == '__main__':
     attacker = Attacker()
+    # app_instance = GigaConnector(attacker, java_service="http://localhost:8080/sendwithqueue")
     app_instance = GigaConnector(attacker)
     app_instance.start()

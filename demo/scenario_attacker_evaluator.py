@@ -66,7 +66,7 @@ if __name__ == "__main__":
     start_evaluator = StartPromptForModel(setup_to_evaluator)
 
     models = ServiceModel(models_name_with_parameters)
-    models.add_external_model(target)
+    # models.add_external_model(target)
 
     prompt = (PromptServiceBuilder()
               .set_attacker(start_attacker_one)

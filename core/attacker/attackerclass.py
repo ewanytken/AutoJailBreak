@@ -22,7 +22,7 @@ class Attacker:
         }
 
         if parameters_model.get('sys_tag') is None:
-            parameters_model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request']})
+            parameters_model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request', 'clue']})
 
         if parameters_model['max_new_tokens'] is None:
             parameters_model['max_new_tokens'] = 555
