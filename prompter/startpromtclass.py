@@ -42,7 +42,7 @@ class StartPromptForModel:
             self.chat_start.update(convert_clue)
 
         if query is not None:
-            self.chat_start.update({"query": "<{}>".format(query)})
+            self.chat_start.update(query)
 
     def get_chat(self):
         return self.chat_start
