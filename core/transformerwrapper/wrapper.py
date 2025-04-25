@@ -1,34 +1,31 @@
-from typing import Dict, Any
+from typing import Dict, Any, Union, List
 
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM
 )
 
-from core import ChatTemplate
 from core.baseabstr import BaseComponent
-
 
 class TransformerWrapper(BaseComponent):
 
-    def __init__(self, model_name: str, sys_tag: list, max_new_tokens: int, **kwargs):
+    def __init__(self, model_name: str,  max_new_tokens: int, system_tag: list = None, **kwargs):
 
         model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
         model = model.eval()
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
-        self.sys_tag = sys_tag
-        self.max_new_tokens = max_new_tokens
+        if system_tag is None:
+            self.system_tag = ['role', 'instruction', 'constraint', 'clue', 'context']
+        else:
+            self.system_tag = system_tag
 
+        self.max_new_tokens = max_new_tokens
         super().__init__(model, tokenizer)
 
-        assert len(self.sys_tag) > 0, "Enter behavior for template: ROLE, QUERY and other"
+    def generate(self, inst_prompt: dict):
 
-    def generate(self, kwargs):
-
-        available_variable = TransformerWrapper.parse_for_template(self.sys_tag, kwargs)
-
-        template_to_chat = ChatTemplate.template(*available_variable)
+        template_to_chat = self.template(inst_prompt)
 
         inputs = self.tokenization_with_template(template_to_chat)
         output = self.model.generate(**inputs, max_new_tokens = self.max_new_tokens)
@@ -49,12 +46,19 @@ class TransformerWrapper(BaseComponent):
 
         return inputs
 
-    @staticmethod
-    def parse_for_template(sys_tag: list, kwargs: dict) -> list:
-        available_variable = []
+    def template(self, inst_prompt: dict) -> Union[Dict[str, str], List[Dict[str, str]]]:
 
-        for key, value in kwargs.items():
-            if key in sys_tag:
-                available_variable.append(value)
+        list_of_dict = []
+        list_of_system = self.system_tag
 
-        return available_variable
+        for k, v in inst_prompt.items():
+            chat = {}
+            if k in list_of_system:
+                chat.update({"role": "system"})
+                chat.update({"content": f"<{k}>{v}</{k}>"})
+            else:
+                chat.update({"role": "assistant"})
+                chat.update({"content": f"<{k}>{v}</{k}>"})
+            list_of_dict.append(chat)
+
+        return list_of_dict

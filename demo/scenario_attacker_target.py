@@ -1,13 +1,7 @@
-from transformers import AutoTokenizer
 
-from core import TransformerWrapper
 from core.service import ServiceModel
 from core.service.scenarioservice import ServiceScenario
 from prompter import StartPromptForModel, PromptServiceBuilder
-
-sys_tag = ['role', 'instruction', 'constraint', 'query', 'response', 'request', 'clue']
-
-max_new_tokens = 200
 
 # target        = Target()
 # target        = TransformerWrapper(target_name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
@@ -16,14 +10,10 @@ attacker = "Felladrin/TinyMistral-248M-Chat-v3"
 target = "Felladrin/TinyMistral-248M-Chat-v3"
 
 models_name_with_parameters = [
-    {'name': attacker, #ATTACKER
+    {'name': attacker,              #ATTACKER
      'max_new_tokens': 555},
-    {'name': target, #TARGET
-     'max_new_tokens': 555},
-    # {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-    #  'max_new_tokens': 555},
-    # {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-    #  'max_new_tokens': 555}
+    {'name': target,                #TARGET
+     'max_new_tokens': 555}
 ]
 
 setup_to_attacker = {
