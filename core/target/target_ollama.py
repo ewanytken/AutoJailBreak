@@ -1,7 +1,7 @@
 from core.target.abstract_model_ext import AbstractModelExternal
 import requests
 
-class TargetOtherService(AbstractModelExternal):
+class TargetOllama(AbstractModelExternal):
 
     def __init__(self,
                  model_name: str = None,
