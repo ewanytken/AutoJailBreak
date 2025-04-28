@@ -4,5 +4,7 @@ from .localredteam.scenarioclass import Scenario
 
 from .transformerwrapper.wrapper import TransformerWrapper
 
-from .target.targetclass import Target
+from .target.target_spring import TargetSpring
 from .attacker.attackerclass import Attacker
+
+from .target.target_other_service import TargetOtherService

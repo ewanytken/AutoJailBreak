@@ -14,3 +14,8 @@ class ParametersAssignError(Exception):
     def __init__(self, message="Cannot assign MODELS or START_CHAT"):
         self.message = message
         super().__init__(self.message)
+
+class BadConnectionError(Exception):
+    def __init__(self, message="Bad connection"):
+        self.message = message
+        super().__init__(self.message)

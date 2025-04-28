@@ -1,7 +1,7 @@
 from typing import Optional
 
 from core.custexcept import ParametersAssignError
-from core import LoggerWrapper, Target
+from core import LoggerWrapper, TargetSpring
 from core.service import ServiceModel
 from prompter import PromptService
 

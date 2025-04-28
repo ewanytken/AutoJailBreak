@@ -1,6 +1,6 @@
 from typing import Optional, Union, Any
 from transformers import AutoTokenizer
-from core import TransformerWrapper, Target
+from core import TransformerWrapper, TargetSpring
 
 
 class ServiceModel:
@@ -40,5 +40,5 @@ class ServiceModel:
     def get_models(self):
         return self.models
 
-    def add_external_model(self, target: Union[Target, Any]) -> None:
+    def add_external_model(self, target: Union[TargetSpring, Any]) -> None:
         self.models.insert(len(self.models), target)
