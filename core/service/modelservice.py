@@ -25,6 +25,7 @@ class ServiceModel:
             parameter_to_generate = {
                 "max_length": 555,
                 "do_sample": True,
+                "device_map" : "auto",
                 "temperature": 0.9,
                 "pad_token_id": tokenizer.eos_token_id,
                 "eos_token_id": tokenizer.eos_token_id

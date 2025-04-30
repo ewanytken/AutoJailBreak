@@ -10,17 +10,6 @@ name_model = "Felladrin/TinyMistral-248M-Chat-v3"
 
 tokenizer = AutoTokenizer.from_pretrained(name_model)
 
-parameter_to_generate = {
-        "max_length": 555,
-        "do_sample": True,
-        "temperature": 0.8,
-        "pad_token_id": tokenizer.eos_token_id,
-        "eos_token_id": tokenizer.eos_token_id
-   }
-
-max_new_tokens = 200
-
-attacker      = TransformerWrapper(name_model, max_new_tokens=max_new_tokens, **parameter_to_generate)
 target        = TargetOllama()
 # target        = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
 

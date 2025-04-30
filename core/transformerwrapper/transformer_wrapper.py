@@ -5,11 +5,11 @@ from transformers import (
     AutoModelForCausalLM
 )
 
-from core.baseabstr import BaseComponent
+from .basecomp import BaseComponent
 
 class TransformerWrapper(BaseComponent):
 
-    def __init__(self, model_name: str,  max_new_tokens: int, system_tag: list = None, **kwargs):
+    def __init__(self, model_name: str,  max_new_tokens: int, use_cpu: bool = False, system_tag: list = None, **kwargs):
 
         model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
         model = model.eval()
@@ -21,7 +21,7 @@ class TransformerWrapper(BaseComponent):
             self.system_tag = system_tag
 
         self.max_new_tokens = max_new_tokens
-        super().__init__(model, tokenizer)
+        super().__init__(model, tokenizer, use_cpu)
 
     def generate(self, inst_prompt: dict):
 

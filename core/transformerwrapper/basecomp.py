@@ -8,9 +8,9 @@ class BaseComponent(ABC):
     model: Union[Any, None] = None
     tokenizer: Union[Any, None] = None
 
-    def __init__(self, model, tokenizer, device: str = 'cpu'):
-        if torch.cuda.is_available():
-            device = "cuda:0"
+    def __init__(self, model, tokenizer, use_cpu: bool, device: str = 'cpu'):
+        if torch.cuda.is_available() and use_cpu is False:
+            device = "cuda"
 
         self.model = model.to(device)
         self.tokenizer = tokenizer

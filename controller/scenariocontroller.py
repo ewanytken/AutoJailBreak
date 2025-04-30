@@ -2,7 +2,6 @@ import os
 import requests
 from flask import Flask, jsonify, request
 
-from core import Scenario
 from core.service import ServiceModel
 
 app = Flask(__name__)
@@ -40,11 +39,7 @@ def elicit_scenario():
 
     models = ServiceModel(models_parameters)
 
-    scenario = Scenario(models.get_models(), max_query)
-
-    result = scenario.attacker_to_target(prompts)
-
-    return jsonify({'result': result}), 200 if result else 204
+    # return jsonify({'result': result}), 200 if result else 204
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=port)

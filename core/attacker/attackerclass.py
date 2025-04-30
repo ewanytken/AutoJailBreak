@@ -21,14 +21,10 @@ class Attacker:
             "eos_token_id": tokenizer.eos_token_id
         }
 
-        if parameters_model.get('sys_tag') is None:
-            parameters_model.update({'sys_tag': ['role', 'instruction', 'constraint', 'query', 'response', 'request', 'clue']})
-
         if parameters_model['max_new_tokens'] is None:
             parameters_model['max_new_tokens'] = 555
 
         self.model = TransformerWrapper(model_name=parameters_model['name'],
-                                        sys_tag=parameters_model['sys_tag'],
                                         max_new_tokens=parameters_model['max_new_tokens'],
                                         **parameter_to_generate)
 

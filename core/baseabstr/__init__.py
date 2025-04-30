@@ -1,1 +1,0 @@
-from .basecomp import BaseComponent
