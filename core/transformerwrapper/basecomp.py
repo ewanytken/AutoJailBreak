@@ -1,7 +1,9 @@
 from abc import ABC
 from abc import abstractmethod
 from typing import Union, Any
+import torch.nn as nn
 import torch
+
 
 class BaseComponent(ABC):
 
@@ -12,7 +14,12 @@ class BaseComponent(ABC):
         if torch.cuda.is_available() and use_cpu is False:
             device = "cuda"
 
+        if torch.cuda.device_count() > 1:
+            print(f"Using {torch.cuda.device_count()} GPUs!")
+            self.model = nn.DataParallel(model)
+
         self.model = model.to(device)
+
         self.tokenizer = tokenizer
         self.device = device
 

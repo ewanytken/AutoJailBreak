@@ -13,6 +13,8 @@ class TransformerWrapper(BaseComponent):
 
         model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
         model = model.eval()
+
+
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
         if system_tag is None:

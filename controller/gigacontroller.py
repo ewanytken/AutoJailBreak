@@ -11,7 +11,7 @@ from core import Attacker
 
 class GigaConnector:
 
-    def __init__(self, attacker: Optional[Attacker], java_service: str = "http://localhost:8080/requestgiga"):
+    def __init__(self, attacker: Optional[Attacker], java_service: str = "http://localhost:8080/request-giga"):
 
         self.app = Flask(__name__)
         self.port = int(os.environ.get('PORT', 5005))
@@ -22,7 +22,7 @@ class GigaConnector:
 
     def setup_routes(self):
 
-        @self.app.route('/gigaconnect', methods=['POST'])
+        @self.app.route('/connect-giga', methods=['POST'])
         def connection():
 
             json_payload = request.get_json()
@@ -33,7 +33,7 @@ class GigaConnector:
                           headers={"Content-Type": "application/json"})
 
 
-        @self.app.route('/gigaanswer', methods=['POST'])
+        @self.app.route('/response-giga', methods=['POST'])
         def get_answer():
 
             json_payload = request.get_json()
