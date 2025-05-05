@@ -19,3 +19,8 @@ class BadConnectionError(Exception):
     def __init__(self, message="Bad connection"):
         self.message = message
         super().__init__(self.message)
+
+class GPUFindError(Exception):
+    def __init__(self, message="Cannot search GPU or don't have video memory"):
+        self.message = message
+        super().__init__(self.message)
