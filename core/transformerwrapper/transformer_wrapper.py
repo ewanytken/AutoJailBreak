@@ -14,7 +14,6 @@ class TransformerWrapper(BaseComponent):
         model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
         model = model.eval()
 
-
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
         if system_tag is None:
@@ -42,9 +41,9 @@ class TransformerWrapper(BaseComponent):
                                                             add_generation_prompt=True)
         inputs = self.tokenizer(formatted_chat,
                                 return_tensors="pt",
-                                add_special_tokens=False)
+                                add_special_tokens=False).to(self.device)
 
-        inputs = {key: tensor.to(self.device) for key, tensor in inputs.items()}
+        # inputs = {key: tensor.to(super.device) for key, tensor in inputs.items()}
 
         return inputs
 

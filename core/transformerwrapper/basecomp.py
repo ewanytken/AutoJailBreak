@@ -3,9 +3,11 @@ from abc import abstractmethod
 from typing import Union, Any
 
 import torch
-
 from core import LoggerWrapper
 from core.custexcept import GPUFindError
+from accelerate import infer_auto_device_map, dispatch_model
+from accelerate.utils import get_balanced_memory
+
 
 log = LoggerWrapper()
 
@@ -22,7 +24,10 @@ class BaseComponent(ABC):
         if torch.cuda.is_available() and use_cpu is False:
             device = self.get_gpu()
 
-        self.model.to(device)
+        if torch.cuda.device_count() > 1:
+            self.multi_gpu()
+        else:
+            self.model.to(device)
 
         self.tokenizer = tokenizer
         self.device = device
@@ -66,3 +71,21 @@ class BaseComponent(ABC):
             raise GPUFindError
 
         return "cpu"
+
+    # deepseek generation, set to 30GiB
+    def multi_gpu(self, *kwargs):
+        # Calculate balanced memory allocation
+        max_memory = get_balanced_memory(
+            self.model,
+            max_memory={i: "30GiB" for i in range(torch.cuda.device_count())},
+        )
+
+        # Create device map
+        device_map = infer_auto_device_map(
+            self.model,
+            max_memory=max_memory,
+        )
+
+        # Dispatch model
+        self.model = dispatch_model(self.model, device_map=device_map)
+        log(f"Device map: {self.model.hf_device_map}")
