@@ -1,4 +1,5 @@
 from .log.loggerwrapper import LoggerWrapper
+from .log.logger_singl import LoggerSingl
 
 from .transformerwrapper.transformer_wrapper import TransformerWrapper
 

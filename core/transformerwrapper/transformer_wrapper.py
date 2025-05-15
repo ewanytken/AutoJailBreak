@@ -42,9 +42,6 @@ class TransformerWrapper(BaseComponent):
         inputs = self.tokenizer(formatted_chat,
                                 return_tensors="pt",
                                 add_special_tokens=False).to(self.device)
-
-        # inputs = {key: tensor.to(super.device) for key, tensor in inputs.items()}
-
         return inputs
 
     def template(self, inst_prompt: dict) -> Union[Dict[str, str], List[Dict[str, str]]]:

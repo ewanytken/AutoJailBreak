@@ -17,17 +17,23 @@ class BaseComponent(ABC):
     model: Union[Any, None] = None
     tokenizer: Union[Any, None] = None
 
-    def __init__(self, model, tokenizer, use_cpu: bool, device: str = 'cpu') -> None:
+    def __init__(self, model, tokenizer, use_cpu: bool) -> None:
 
         self.model = model
 
         if torch.cuda.is_available() and use_cpu is False:
             device = self.get_gpu()
+            log("DEVICE : {}".format(device))
 
-        if torch.cuda.device_count() > 1:
-            self.multi_gpu()
-        else:
             self.model.to(device)
+        else:
+            device = 'cpu'
+            self.model.to(device)
+
+        # if torch.cuda.device_count() > 1:
+        #     self.multi_gpu()
+        # else:
+        #     self.model.to(device)
 
         self.tokenizer = tokenizer
         self.device = device
@@ -63,17 +69,20 @@ class BaseComponent(ABC):
             for gpu_id in range(torch.cuda.device_count()):
                 free_vram = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory_allocated(gpu_id)
                 if free_vram > self.get_model_size() * 1.05: # +5% size
+                    log(f"Current CUDA: {gpu_id}")
+                    log(f"Model Size: {self.get_model_size()}")
+                    log(f"Free VRAM: {free_vram}")
                     return "cuda:{}".format(gpu_id)
                 else:
-                    log(f"Filled GPU: cuda:{gpu_id}, Free VRAM: {free_vram}, Current model size: {self.get_model_size()}")
+                    log(f"BAD SIZE - FILLED GPU: cuda:{gpu_id}, Free VRAM: {free_vram}, Current model size: {self.get_model_size()}")
 
         except:
             raise GPUFindError
 
         return "cpu"
 
-    # deepseek generation, set to 30GiB
-    def multi_gpu(self, *kwargs):
+    # deepseek generation, set to 30GiB / dont work
+    def multi_gpu(self):
         # Calculate balanced memory allocation
         max_memory = get_balanced_memory(
             self.model,

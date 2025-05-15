@@ -25,7 +25,7 @@ class ServiceModel:
             parameter_to_generate = {
                 "max_length": 555,
                 "do_sample": True,
-                "device_map" : "auto",
+                # "device_map" : "auto", # if used device_map then don't work gpu distribution in fpi-server
                 "temperature": 0.9,
                 "pad_token_id": tokenizer.eos_token_id,
                 "eos_token_id": tokenizer.eos_token_id

@@ -1,23 +1,20 @@
-from transformers import AutoTokenizer
+import os
 
-from core import TargetSpring
-from core import TransformerWrapper
+from core import TargetOtherService
 from core.service import ServiceModel
 from core.service.scenarioservice import ServiceScenario
 from prompter import StartPromptForModel, PromptServiceBuilder
 
-target        = TargetSpring()
-# target        = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
+base_url="https://openrouter.ai/api/v1"
+api_key=os.getenv("OPEN_ROUTE_KEY")
+model="qwen/qwen3-4b:free"
+
+
+target = TargetOtherService(base_url=base_url, api_key=api_key, model_name=model)
 
 models_name_with_parameters = [
     {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-     'max_new_tokens': 555},
-    # {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-    #  'max_new_tokens': 555},
-    # {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-    #  'max_new_tokens': 555},
-    # {'name': "Felladrin/TinyMistral-248M-Chat-v3",
-    #  'max_new_tokens': 555}
+     'max_new_tokens': 1555}
 ]
 
 setup_to_attacker = {
@@ -37,7 +34,7 @@ if __name__ == "__main__":
     models = ServiceModel(models_name_with_parameters)
     models.add_external_model(target)
 
-    start_attacker = StartPromptForModel(setup_to_attacker, query, 2)
+    start_attacker = StartPromptForModel(setup_to_attacker, query)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
     scenario = ServiceScenario(models, prompt, 2)
@@ -48,4 +45,5 @@ if __name__ == "__main__":
     # attacker to target with additional question, use True (default) if you need answer from target model
     # scenario.attacker_to_target(additional_question)
 
-    scenario.attacker_to_target(additional_question, False)
+
+    # scenario.attacker_to_target()
