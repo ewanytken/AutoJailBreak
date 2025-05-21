@@ -17,7 +17,7 @@ class TransformerWrapper(BaseComponent):
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
         if system_tag is None:
-            self.system_tag = ['role', 'instruction', 'constraint', 'clue', 'context']
+            self.system_tag = ['your_role', 'instruction', 'constraint', 'clue', 'context']
         else:
             self.system_tag = system_tag
 
