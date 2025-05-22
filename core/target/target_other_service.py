@@ -24,7 +24,8 @@ class TargetOtherService(AbstractModelExternal):
             response = self.client.chat.completions.create(
 
                 model=self.model_name,
-                messages=json_payload
+                messages=json_payload,
+                max_tokens=1555
             )
             return response.choices[0].message.content
 
