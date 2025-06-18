@@ -31,7 +31,7 @@ def parameters_for_prompter():
     if content.get('number_prompt') is not None:
         number_prompt= content['number_prompt']
 
-    attacker_prompt = StartPromptForModel(dict_setup=attacker, query=query, harmful_prompt=number_prompt)
+    attacker_prompt = StartPromptForModel(dict_setup=attacker, harmful_query=query, prepared_scenario=number_prompt)
     reattacker_prompt = StartPromptForModel(dict_setup=reattacker)
     evaluator_prompt = StartPromptForModel(dict_setup=evaluator)
 

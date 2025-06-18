@@ -9,7 +9,7 @@ class AbstractModelExternal(ABC):
         self.api_key = api_key
         self.base_url = base_url
 
-        self.system_tag = ['role', 'instruction', 'constraint', 'clue', 'context']
+        self.system_tag = ['your_role', 'instruction', 'constraint', 'clue', 'context']
 
 
     def set_system_tag(self, tag: list) -> None:

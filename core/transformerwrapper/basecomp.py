@@ -30,11 +30,6 @@ class BaseComponent(ABC):
             device = 'cpu'
             self.model.to(device)
 
-        # if torch.cuda.device_count() > 1:
-        #     self.multi_gpu()
-        # else:
-        #     self.model.to(device)
-
         self.tokenizer = tokenizer
         self.device = device
 

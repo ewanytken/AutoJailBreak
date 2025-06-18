@@ -10,7 +10,7 @@ class TargetOtherService(AbstractModelExternal):
                  api_key: str = None,
                  base_url: str = None) -> None:
 
-        super().__init__(base_url, api_key, model_name)
+        super().__init__(model_name, api_key, base_url)
         self.model_name = model_name
         self.client = OpenAI(base_url=base_url, api_key=api_key)
 

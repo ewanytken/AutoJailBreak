@@ -18,8 +18,7 @@ class PromptService:
         return "\n".join(models)
 
     def __len__(self):
-        if (len(self.attackers) and len(self.targets) and len(self.evaluators)) is not None:
-            return [len(self.attackers), len(self.evaluators), len(self.targets)]
+        return len(self.attackers) + len(self.evaluators) # without len(targets)
 
     def get_attackers(self) -> list:
         return self.attackers

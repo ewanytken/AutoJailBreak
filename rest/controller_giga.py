@@ -1,12 +1,8 @@
-import json
 import os
 import time
-from typing import Optional
 
-from flask import Flask, jsonify, request, Response
-import requests
+from flask import Flask, jsonify, request
 
-from core import Attacker
 from rest.request_giga import GigaRest, ResponseFromService
 
 

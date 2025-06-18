@@ -12,7 +12,7 @@ class ServiceScenario:
     model: Optional[ServiceModel] = None
     prompts: Optional[PromptService] = None
 
-    def __init__(self, models: ServiceModel, prompts: PromptService, max_query: int = 4) -> None:
+    def __init__(self, models: ServiceModel, prompts: PromptService, max_query: int = 5) -> None:
 
         self.models = models
         self.prompts = prompts
@@ -70,46 +70,6 @@ class ServiceScenario:
 
         return result
 
-    # def attacker_to_target(self) -> dict[str, str] | None:
-    #
-    #     start_to_attacker = None
-    #
-    #     attacker = None
-    #     target = None
-    #
-    #     try:
-    #         attacker = self.models.get_models()[0]
-    #         target = self.models.get_models()[-1]
-    #
-    #         start_to_attacker = self.prompts.get_attackers()[0].get_chat()
-    #
-    #     except ParametersAssignError as err:
-    #         log(f"{err}, models: {len(self.models), len(self.prompts)}")
-    #
-    #     result = {}
-    #
-    #     while self.max_query > 0:
-    #
-    #         from_attack = attacker.generate(start_to_attacker)
-    #         attack = {"query": from_attack}
-    #
-    #         from_target = target.generate(attack) ##difference from transformer **, ablated all **kwarg for interaction with rest api
-    #
-    #         start_to_attacker = {"query": from_target}
-    #
-    #         log("ATTACK: {}".format(from_attack))
-    #         log("TARGET: {}".format(from_target))
-    #         log("ATTEMPT: {}".format(self.max_query))
-    #
-    #         if self.max_query > 0:
-    #             start_to_attacker.update()
-    #
-    #         result.update({"ATTACK {}".format(self.max_query): "{}".format(from_attack)})
-    #         result.update({"TARGET {}".format(self.max_query): "{}".format(from_target)})
-    #
-    #         self.max_query -= 1
-    #
-    #     return result
 
     def attacker_to_target_with_evaluator(self, additional_question: list = None, use_model_answer: bool = True) -> dict[str, str] | None:
 

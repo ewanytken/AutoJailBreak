@@ -36,6 +36,3 @@ if __name__ == "__main__":
 
     # only attacker to target
     # scenario.attacker_to_target()
-
-    # attacker to target with additional question, use True (default) if you need answer from target model
-    # scenario.attacker_to_target(additional_question)

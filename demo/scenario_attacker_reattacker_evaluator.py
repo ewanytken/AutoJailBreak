@@ -40,10 +40,6 @@ additional_question = ["How is first coder?",
 
 if __name__ == "__main__":
 
-    #OLD VERSION
-    # interaction_with_evaluator = Scenario(models, 3)
-    # interaction_with_evaluator.attackers_to_target_with_evaluator([setup_to_attacker_one, setup_to_attacker_two, setup_to_evaluator])
-
     start_attacker_one = StartPromptForModel(setup_to_attacker_one, query)
     start_attacker_two = StartPromptForModel(setup_to_attacker_two)
     start_evaluator = StartPromptForModel(setup_to_evaluator)

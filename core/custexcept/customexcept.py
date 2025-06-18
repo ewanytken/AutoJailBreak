@@ -23,3 +23,8 @@ class GPUFindError(Exception):
     def __init__(self, message="Cannot search GPU or don't have video memory"):
         self.message = message
         super().__init__(self.message)
+
+class KeyNotFoundError(Exception):
+    def __init__(self, message="Key not found in JSON message"):
+        self.message = message
+        super().__init__(self.message)
