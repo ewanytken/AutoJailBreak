@@ -1,4 +1,4 @@
-from core.target.abstract_model_ext import AbstractModelExternal
+from core.target_external.abstract_model_ext import AbstractModelExternal
 import requests
 
 class TargetOllama(AbstractModelExternal):

@@ -4,7 +4,7 @@ from prompter import PromptsFromCSV
 import yaml
 from pathlib import Path
 
-class StartPromptForModel:
+class BasePrompt:
 
     def __init__(self,
                  dict_setup: Optional[dict[str, str]],

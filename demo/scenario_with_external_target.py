@@ -2,15 +2,15 @@ import os
 
 from core import TargetOtherService
 from core.service import ServiceModel
-from core.service.scenarioservice import ServiceScenario
-from prompter import StartPromptForModel, PromptServiceBuilder
+from core.service.scenario_service import ServiceScenario
+from prompter import BasePrompt, PromptServiceBuilder
 
 # Base parameters for external model
 base_url="https://openrouter.ai/api/v1"
 api_key=os.getenv("OPEN_ROUTE_KEY")
 model="qwen/qwen3-4b:free"
 
-# External target model
+# External target_external model
 target = TargetOtherService(base_url=base_url, api_key=api_key, model_name=model)
 
 # Selected attack model
@@ -52,10 +52,10 @@ if __name__ == "__main__":
     models = ServiceModel(models_name_with_parameters)
     models.add_external_model(target)
 
-    start_attacker = StartPromptForModel(setup_to_attacker, query)
+    start_attacker = BasePrompt(setup_to_attacker, query)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
     scenario = ServiceScenario(models, prompt, 2)
 
-    # attacker to target with additional question, use True (default) if you need answer from target model
+    # attacker to target_external with additional question, use True (default) if you need answer from target_external model
     scenario.attacker_to_target()

@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 
-from prompter import StartPromptForModel, PromptServiceBuilder
+from prompter import BasePrompt, PromptServiceBuilder
 
 app = Flask(__name__)
 port = int(os.environ.get('PORT', 5001))
@@ -31,13 +31,13 @@ def parameters_for_prompter():
     if content.get('number_prompt') is not None:
         number_prompt= content['number_prompt']
 
-    attacker_prompt = StartPromptForModel(dict_setup=attacker, harmful_query=query, prepared_scenario=number_prompt)
-    reattacker_prompt = StartPromptForModel(dict_setup=reattacker)
-    evaluator_prompt = StartPromptForModel(dict_setup=evaluator)
+    attacker_prompt = BasePrompt(dict_setup=attacker, harmful_query=query, prepared_scenario=number_prompt)
+    reattacker_prompt = BasePrompt(dict_setup=reattacker)
+    evaluator_prompt = BasePrompt(dict_setup=evaluator)
 
-    start_reattacker = StartPromptForModel(reattacker)
-    start_attacker = StartPromptForModel(attacker, query, 2)
-    start_evaluator = StartPromptForModel(evaluator)
+    start_reattacker = BasePrompt(reattacker)
+    start_attacker = BasePrompt(attacker, query, 2)
+    start_evaluator = BasePrompt(evaluator)
     prompter = PromptServiceBuilder().set_attacker(start_attacker).set_attacker(start_reattacker).set_evaluator(start_evaluator).build()
 
     prompt_to_set = [attacker_prompt.get_chat(), reattacker_prompt.get_chat(), evaluator_prompt.get_chat()]

@@ -5,7 +5,7 @@ from transformers import (
     AutoModelForCausalLM
 )
 
-from .basecomp import BaseComponent
+from .base_component import BaseComponent
 
 class TransformerWrapper(BaseComponent):
 

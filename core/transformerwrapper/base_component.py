@@ -4,7 +4,7 @@ from typing import Union, Any
 
 import torch
 from core import LoggerWrapper
-from core.custexcept import GPUFindError
+from core.custom_exception import GPUFindError
 from accelerate import infer_auto_device_map, dispatch_model
 from accelerate.utils import get_balanced_memory
 

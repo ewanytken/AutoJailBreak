@@ -1,6 +1,6 @@
 from core.service import ServiceModel
-from core.service.scenarioservice import ServiceScenario
-from prompter import StartPromptForModel, PromptServiceBuilder
+from core.service.scenario_service import ServiceScenario
+from prompter import BasePrompt, PromptServiceBuilder
 
 attacker = "Felladrin/TinyMistral-248M-Chat-v3"
 target =   "Felladrin/TinyMistral-248M-Chat-v3"
@@ -27,12 +27,12 @@ if __name__ == "__main__":
 
     models = ServiceModel(models_name_with_parameters)
 
-    start_attacker = StartPromptForModel(setup_to_attacker, query)
+    start_attacker = BasePrompt(setup_to_attacker, query)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
     scenario = ServiceScenario(models, prompt, 2)
 
     scenario.attacker_to_target(additional_question)
 
-    # only attacker to target
+    # only attacker to target_external
     # scenario.attacker_to_target()

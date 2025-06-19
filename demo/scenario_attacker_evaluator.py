@@ -1,6 +1,6 @@
 from core.service import ServiceModel
-from core.service.scenarioservice import ServiceScenario
-from prompter import StartPromptForModel, PromptServiceBuilder
+from core.service.scenario_service import ServiceScenario
+from prompter import BasePrompt, PromptServiceBuilder
 
 
 models_name_with_parameters = [
@@ -33,8 +33,8 @@ additional_question = ["How is first coder?",
 
 if __name__ == "__main__":
 
-    start_attacker_one = StartPromptForModel(setup_to_attacker_one, query, 2)
-    start_evaluator = StartPromptForModel(setup_to_evaluator)
+    start_attacker_one = BasePrompt(setup_to_attacker_one, query, 2)
+    start_evaluator = BasePrompt(setup_to_evaluator)
 
     models = ServiceModel(models_name_with_parameters)
 

@@ -1,4 +1,4 @@
-from prompter import StartPromptForModel
+from prompter import BasePrompt
 
 class PromptService:
 
@@ -37,15 +37,15 @@ class PromptServiceBuilder:
 
         self.prompt_service = PromptService()
 
-    def set_attacker(self, prompt_to_attacker: StartPromptForModel):
+    def set_attacker(self, prompt_to_attacker: BasePrompt):
         self.prompt_service.attackers.append(prompt_to_attacker)
         return self
 
-    def set_target(self, prompt_to_target: StartPromptForModel):
+    def set_target(self, prompt_to_target: BasePrompt):
         self.prompt_service.targets.append(prompt_to_target)
         return self
 
-    def set_evaluator(self, prompt_to_evaluator: StartPromptForModel):
+    def set_evaluator(self, prompt_to_evaluator: BasePrompt):
         self.prompt_service.evaluators.append(prompt_to_evaluator)
         return self
 

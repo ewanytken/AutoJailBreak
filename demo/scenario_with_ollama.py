@@ -3,15 +3,15 @@ from transformers import AutoTokenizer
 from core import TargetSpring, TargetOllama
 from core import TransformerWrapper
 from core.service import ServiceModel
-from core.service.scenarioservice import ServiceScenario
-from prompter import StartPromptForModel, PromptServiceBuilder
+from core.service.scenario_service import ServiceScenario
+from prompter import BasePrompt, PromptServiceBuilder
 
 name_model = "Felladrin/TinyMistral-248M-Chat-v3"
 
 tokenizer = AutoTokenizer.from_pretrained(name_model)
 
 target        = TargetOllama()
-# target        = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
+# target_external        = TransformerWrapper(name_model, sys_tag=sys_tag, max_new_tokens=max_new_tokens, **parameter_to_generate)
 
 models_name_with_parameters = [
     {'name': "Felladrin/TinyMistral-248M-Chat-v3",
@@ -41,15 +41,15 @@ if __name__ == "__main__":
     models = ServiceModel(models_name_with_parameters)
     models.add_external_model(target)
 
-    start_attacker = StartPromptForModel(setup_to_attacker, query, 2)
+    start_attacker = BasePrompt(setup_to_attacker, query, 2)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
     scenario = ServiceScenario(models, prompt, 2)
 
-    # only attacker to target
+    # only attacker to target_external
     # scenario.attacker_to_target()
 
-    # attacker to target with additional question, use True (default) if you need answer from target model
+    # attacker to target_external with additional question, use True (default) if you need answer from target_external model
     # scenario.attacker_to_target(additional_question)
 
     scenario.attacker_to_target(additional_question, False)

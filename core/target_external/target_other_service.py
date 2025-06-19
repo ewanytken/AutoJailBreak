@@ -1,7 +1,7 @@
 import time
 
 from openai import OpenAI
-from core.target.abstract_model_ext import AbstractModelExternal
+from core.target_external.abstract_model_ext import AbstractModelExternal
 
 class TargetOtherService(AbstractModelExternal):
 

@@ -1,6 +1,6 @@
 
 from core import LoggerWrapper
-from prompter import PromptsFromCSV, StartPromptForModel, PromptServiceBuilder
+from prompter import PromptsFromCSV, BasePrompt, PromptServiceBuilder
 
 path = '../prompts/jailbreak_prompts_2023_05_07.csv'
 
@@ -27,11 +27,11 @@ if __name__ == '__main__':
     # # print(prompts[2])
     # clue = prompts.convert_to_prompt(2)
 
-    start_reattacker = StartPromptForModel(reattacker)
+    start_reattacker = BasePrompt(reattacker)
 
-    start_attacker = StartPromptForModel(attacker, query, 2)
+    start_attacker = BasePrompt(attacker, query, 2)
 
-    start_evaluator = StartPromptForModel(evaluator)
+    start_evaluator = BasePrompt(evaluator)
 
     prompter = PromptServiceBuilder().set_attacker(start_attacker).set_attacker(start_reattacker).set_evaluator(start_evaluator).build()
 

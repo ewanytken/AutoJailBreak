@@ -1,10 +1,10 @@
 from typing import Optional, List, Dict
 
 from core import TargetOtherService, LoggerWrapper
-from core.custexcept import KeyNotFoundError, ScenarioParametersError
+from core.custom_exception import KeyNotFoundError, ScenarioParametersError
 from core.service import ServiceModel
-from core.service.scenarioservice import ServiceScenario
-from prompter import PromptServiceBuilder, StartPromptForModel
+from core.service.scenario_service import ServiceScenario
+from prompter import PromptServiceBuilder, BasePrompt
 
 # data = json.loads(complex_json)
 
@@ -64,14 +64,14 @@ class ScenarioFacade:
 
         models = ServiceModel(self.models_name)
 
-        attacker_prompt = StartPromptForModel(self.attacker, None, self.prepared_scenario)
+        attacker_prompt = BasePrompt(self.attacker, None, self.prepared_scenario)
         prompt = PromptServiceBuilder().set_attacker(attacker_prompt)
 
         if self.reattacker is not None:
-            prompt.set_attacker(StartPromptForModel(self.reattacker))
+            prompt.set_attacker(BasePrompt(self.reattacker))
 
         if self.evaluator is not None:
-            prompt.set_evaluator(StartPromptForModel(self.evaluator))
+            prompt.set_evaluator(BasePrompt(self.evaluator))
 
         if self.external_target is not None:
             target = TargetOtherService(model_name=self.external_target["model_name"],
@@ -98,7 +98,7 @@ class ScenarioFacade:
                                               f"3 attack|reattack|evaluator prompt for 4 or more model")
 
         except Exception as err:
-            log(f"Exception occurred, scenario dont start: {err}")
+            log(f"Exception occurred, scenario don't start: {err}")
 
     def get_dialog(self):
         return self.dialog
