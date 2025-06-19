@@ -24,7 +24,7 @@ class ServiceScenario:
 
     def attacker_to_target(self, additional_question: list = None, use_model_answer: bool = True) -> dict[str, str] | None:
 
-        if additional_question is not None and self.max_query < len(additional_question):
+        if additional_question is not None and self.max_query is not len(additional_question):
             self.max_query = len(additional_question)
 
         len_max_query = self.max_query

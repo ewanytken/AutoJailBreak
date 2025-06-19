@@ -34,7 +34,7 @@ class StartPromptForModel:
             with open(config_path, 'r') as file:
                 config = yaml.safe_load(file)
 
-            path = config['file']
+            path = config['jailbreak_table_one']
 
             clue = PromptsFromCSV(path)
             convert_clue = clue.convert_to_prompt(prepared_scenario)

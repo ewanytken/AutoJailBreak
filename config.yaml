@@ -1,2 +1,4 @@
-file:
+jailbreak_table_one:
   prompts/jailbreak_prompts_2023_05_07.csv
+jailbreak_table_two:
+  prompts/jailbreak_prompts_2023_12_25.csv
