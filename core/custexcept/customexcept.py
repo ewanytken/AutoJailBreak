@@ -28,3 +28,8 @@ class KeyNotFoundError(Exception):
     def __init__(self, message="Key not found in JSON message"):
         self.message = message
         super().__init__(self.message)
+
+class ScenarioParametersError(Exception):
+    def __init__(self, message="Parameters not valid for any Scenario"):
+        self.message = message
+        super().__init__(self.message)

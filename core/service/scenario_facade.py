@@ -1,7 +1,9 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
+
+from tensorflow.python.ops.numpy_ops.np_math_ops import equal
 
 from core import TargetOtherService, LoggerWrapper
-from core.custexcept import KeyNotFoundError
+from core.custexcept import KeyNotFoundError, ScenarioParametersError
 from core.service import ServiceModel
 from core.service.scenarioservice import ServiceScenario
 from prompter import PromptServiceBuilder, StartPromptForModel, PromptService
@@ -58,21 +60,23 @@ log = LoggerWrapper()
 
 class ScenarioFacade:
 
-    def __init__(self, entry_json: Optional[dict]):
+    def __init__(self, entry_json: Optional[Dict]):
 
         self.entry_json = entry_json
 
-        self.models: Optional[list] = None
-        self.attacker: Optional[dict] = None
+        self.models: Optional[List] = None
+        self.attacker: Optional[Dict] = None
 
-        self.reattacker: Optional[dict] = None
-        self.evaluator: Optional[dict] = None
+        self.reattacker: Optional[Dict] = None
+        self.evaluator: Optional[Dict] = None
 
-        self.external_target: Optional[dict] = None
+        self.external_target: Optional[Dict] = None
 
-        self.additional_question: Optional[list] = None
+        self.additional_question: Optional[List] = None
         self.prepared_scenario: Optional[int] = None
         self.number_of_attempt: Optional[int] = None
+
+        self.dialog: Optional[Dict] = None
 
         self.json_parsing()
         self.scenario_selector()
@@ -127,12 +131,19 @@ class ScenarioFacade:
         prompts = prompt.build()
         scenario = ServiceScenario(models, prompts)
         scenario.set_max_query(self.number_of_attempt)
+
         try:
-            if len(prompts) == 1:
-                scenario.attacker_to_target(self.additional_question if self.additional_question is not None else None)
-            elif len(prompts) == 2:
-                scenario.attacker_to_target_with_evaluator(self.additional_question if self.additional_question is not None else None)
-            elif len(prompts) == 3:
-                scenario.attackers_to_target_with_evaluator()
+            if len(prompts) == 1 and len(models) == 2:
+                self.dialog = scenario.attacker_to_target(self.additional_question if self.additional_question is not None else None)
+            elif len(prompts) == 2 and len(models) == 3:
+                self.dialog = scenario.attacker_to_target_with_evaluator(self.additional_question if self.additional_question is not None else None)
+            elif len(prompts) == 3 and len(models) == 4:
+                self.dialog = scenario.attackers_to_target_with_evaluator()
+            else:
+                raise ScenarioParametersError(f"Parameters not valid for any Scenario: {len(prompts)}, {len(models)} ")
+
         except Exception as err:
-            log(f"Exception occurred: {err}")
+            log(f"Exception occurred, scenario dont start: {err}")
+
+    def get_dialog(self):
+        return self.dialog
