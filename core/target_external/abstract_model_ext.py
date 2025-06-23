@@ -25,7 +25,7 @@ class AbstractModelExternal(ABC):
         self.api_key = api_key
 
     @abstractmethod
-    def generate(self, json_payload: dict) -> dict:
+    def generate(self, json_payload: dict) -> str:
         pass
 
     def template(self, inst_prompt: dict) -> Union[Dict[str, str], List[Dict[str, str]]]:

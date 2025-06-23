@@ -1,2 +1,2 @@
 
-from .jailbreakcontroller import JailBreakController
+from .jailbreak_controller import JailBreakController

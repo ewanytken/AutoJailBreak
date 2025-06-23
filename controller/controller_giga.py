@@ -2,9 +2,7 @@ import os
 import time
 
 from flask import Flask, jsonify, request
-
-from rest.request_giga import GigaRest, ResponseFromService
-
+from core.service import GigaRest, ResponseFromService
 
 class GigaController:
 

@@ -1,7 +1,6 @@
 import requests
 from dask.array import equal
 
-
 class GigaRest:
 
     def __init__(self, authorization: str, uuid: str):
