@@ -1,13 +1,13 @@
 from typing import Optional
 
 from core.custom_exception import ParametersAssignError
-from core import LoggerWrapper, TargetSpring
-from core.service import ServiceModel
+from core import LoggerWrapper
+from core.service.model_service import ServiceModel
 from prompter import PromptService
 
 log = LoggerWrapper()
 
-class ServiceScenario:
+class ScenarioService:
 
     model: Optional[ServiceModel] = None
     prompts: Optional[PromptService] = None

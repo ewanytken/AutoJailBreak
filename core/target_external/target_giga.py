@@ -1,7 +1,7 @@
 import time
 
-from core.service import GigaRest
-from core.target_external import AbstractModelExternal
+from core.service.giga_service import GigaRest
+from core.target_external.abstract_model_ext import AbstractModelExternal
 
 
 class TargetGiga(AbstractModelExternal):

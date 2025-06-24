@@ -1,5 +1,5 @@
 from core.service import ServiceModel
-from core.service.scenario_service import ServiceScenario
+from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 attacker = "Felladrin/TinyMistral-248M-Chat-v3"
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     start_attacker = BasePrompt(setup_to_attacker, query)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
-    scenario = ServiceScenario(models, prompt, 2)
+    scenario = ScenarioService(models, prompt, 2)
 
     scenario.attacker_to_target(additional_question)
 

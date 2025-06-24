@@ -3,7 +3,7 @@ from transformers import AutoTokenizer
 from core import TargetSpring, TargetOllama
 from core import TransformerWrapper
 from core.service import ServiceModel
-from core.service.scenario_service import ServiceScenario
+from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 name_model = "Felladrin/TinyMistral-248M-Chat-v3"
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     start_attacker = BasePrompt(setup_to_attacker, query, 2)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
-    scenario = ServiceScenario(models, prompt, 2)
+    scenario = ScenarioService(models, prompt, 2)
 
     # only attacker to target_external
     # scenario.attacker_to_target()

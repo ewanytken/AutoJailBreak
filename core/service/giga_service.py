@@ -1,5 +1,4 @@
 import requests
-from dask.array import equal
 
 class GigaRest:
 

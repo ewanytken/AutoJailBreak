@@ -1,13 +1,11 @@
-import json
+import os
 import os
 import time
 from typing import Optional
 
-from flask import Flask, jsonify, request, Response
 import requests
-
+from flask import Flask, request
 from core import Attacker
-
 
 class GigaConnector:
 

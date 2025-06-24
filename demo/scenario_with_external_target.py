@@ -2,7 +2,7 @@ import os
 
 from core import TargetOtherService
 from core.service import ServiceModel
-from core.service.scenario_service import ServiceScenario
+from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 # Base parameters for external model
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     start_attacker = BasePrompt(setup_to_attacker, query)
     prompt = PromptServiceBuilder().set_attacker(start_attacker).build()
 
-    scenario = ServiceScenario(models, prompt, 2)
+    scenario = ScenarioService(models, prompt, 2)
 
     # attacker to target_external with additional question, use True (default) if you need answer from target_external model
     scenario.attacker_to_target()

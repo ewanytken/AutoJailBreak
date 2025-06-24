@@ -2,8 +2,9 @@ import os
 
 import uvicorn
 from fastapi import FastAPI, Body
-from core.service import ScenarioFacade, GigaRest
-
+import yaml
+from pathlib import Path
+from core import ScenarioFacade
 
 class JailBreakController:
 
@@ -11,9 +12,17 @@ class JailBreakController:
         self.app = FastAPI()
         self.register_request()
 
+        address_path = Path(__file__).parent.parent / 'config.yaml'
+        with open(address_path, 'r') as file:
+            address = yaml.safe_load(file)
+
+        self.host = address['address']['host']
+        self.port = address['address']['port']
+
+
     def register_request(self):
 
-        @self.app.post('/autojailbreak', status_code=200)
+        @self.app.post('/auto_jailbreak', status_code=200)
         def autojailbreak(json = Body()):
             scenario = ScenarioFacade(json)
 
@@ -26,6 +35,12 @@ class JailBreakController:
             return scenario.get_dialog()
 
         @self.app.post('/attacker_target_evaluator', status_code=200)
+        def attacker_target(json = Body()):
+            scenario = ScenarioFacade(json)
+
+            return scenario.get_dialog()
+
+        @self.app.post('/attackers_target_evaluator', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
@@ -44,4 +59,4 @@ class JailBreakController:
             return scenario.get_dialog()
 
     def start(self):
-        uvicorn.run(self.app, host="127.0.0.1", port=80, log_level="info")
+        uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")

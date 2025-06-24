@@ -1,5 +1,5 @@
 from core.service import ServiceModel
-from core.service.scenario_service import ServiceScenario
+from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
               .set_evaluator(start_evaluator)
               .build())
 
-    scenario = ServiceScenario(models, prompt, 2)
+    scenario = ScenarioService(models, prompt, 2)
 
     scenario.attacker_to_target_with_evaluator()
     # scenario.attacker_to_target_with_evaluator(additional_question)

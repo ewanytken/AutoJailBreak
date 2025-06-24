@@ -2,12 +2,11 @@ from typing import Optional, List, Dict
 
 from core import TargetOtherService, LoggerWrapper
 from core.custom_exception import KeyNotFoundError, ScenarioParametersError
-from core.service import ServiceModel
-from core.service.scenario_service import ServiceScenario
-from core.target_external import TargetGiga
-from prompter import PromptServiceBuilder, BasePrompt
 
-# data = json.loads(complex_json)
+from core import ScenarioService
+from core import TargetGiga
+from core.service.model_service import ServiceModel
+from prompter import PromptServiceBuilder, BasePrompt
 
 log = LoggerWrapper()
 
@@ -17,6 +16,7 @@ class ScenarioFacade:
 
         self.entry_json = entry_json
 
+        self.models = None
         self.models_name: Optional[List] = None
         self.attacker: Optional[Dict] = None
 
@@ -59,11 +59,11 @@ class ScenarioFacade:
 
         if self.entry_json.get("number_of_attempt") is not None:
             self.number_of_attempt = self.entry_json["number_of_attempt"]
+        else:
+            self.number_of_attempt = 5
 
 
     def scenario_selector(self):
-
-        models = ServiceModel(self.models_name)
 
         attacker_prompt = BasePrompt(self.attacker, None, self.prepared_scenario)
         prompt = PromptServiceBuilder().set_attacker(attacker_prompt)
@@ -73,41 +73,43 @@ class ScenarioFacade:
 
         if self.reattacker is not None:
             prompt.set_attacker(BasePrompt(self.reattacker))
+        prompts = prompt.build()
 
+        self.models = ServiceModel(self.models_name)
+        self.external_model_added()
+
+        scenario = ScenarioService(self.models, prompts)
+        scenario.set_max_query(self.number_of_attempt)
+
+        self.check_to_condition(prompts, scenario)
+
+    def external_model_added(self):
         if self.external_target is not None:
             if len(self.external_target) == 3:
                 target = TargetOtherService(model_name=self.external_target["model_name"],
                                             api_key=self.external_target["api_key"],
                                             base_url=self.external_target["base_url"])
-
             else:
                 target = TargetGiga(authorization=self.external_target["authorization"],
                                     uuid=self.external_target["uuid"])
-
             try:
-                models.add_external_model(target)
+                self.models.add_external_model(target)
             except Exception as err:
                 log(f"Exception occurred, scenario don't start: {err}")
 
-        prompts = prompt.build()
-        scenario = ServiceScenario(models, prompts)
-        scenario.set_max_query(self.number_of_attempt)
-
-        self.check_to_condition(models, prompts, scenario)
-
-    def check_to_condition(self, models, prompts, scenario):
+    def check_to_condition(self, prompts, scenario):
         try:
-            if len(prompts) == 1 and len(models) > 1:
+            if len(prompts) == 1 and len(self.models) > 1:
                 self.dialog = scenario.attacker_to_target(
                     self.additional_question if self.additional_question is not None else None)
-            elif len(prompts) == 2 and len(models) >= 3:
+            elif len(prompts) == 2 and len(self.models) >= 3:
                 self.dialog = scenario.attacker_to_target_with_evaluator(
                     self.additional_question if self.additional_question is not None else None)
-            elif len(prompts) == 3 and len(models) == 4:
+            elif len(prompts) == 3 and len(self.models) == 4:
                 self.dialog = scenario.attackers_to_target_with_evaluator()
             else:
                 raise ScenarioParametersError(
-                    f"Parameters not valid for any Scenario: PROMPTS - {len(prompts)}, MODELS - {len(models)}."
+                    f"Parameters not valid for any Scenario: PROMPTS - {len(prompts)}, MODELS - {len(self.models)}."
                     f"Should be 1 attack prompt for 2 or more model, ether "
                     f"2 attack|evaluator prompt for 3 or more model, ether "
                     f"3 attack|reattack|evaluator prompt for 4 or more model")
