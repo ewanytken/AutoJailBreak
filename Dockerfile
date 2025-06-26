@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 COPY ./ /app/icebreaker/
 
 # specify default commands
-CMD ["uvicorn", "main:app"]
+CMD ["python", "icebreaker/main.py"]
