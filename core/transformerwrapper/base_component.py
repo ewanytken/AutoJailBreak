@@ -1,37 +1,36 @@
+import math
 from abc import ABC
 from abc import abstractmethod
-from typing import Union, Any
+from typing import Union, Any, Dict, Optional
 
+import psutil
 import torch
+from huggingface_hub import snapshot_download
+from torch import nn
+
 from core import LoggerWrapper
 from core.custom_exception import GPUFindError
-from accelerate import infer_auto_device_map, dispatch_model
+from accelerate import infer_auto_device_map, dispatch_model, init_empty_weights, load_checkpoint_and_dispatch
 from accelerate.utils import get_balanced_memory
 
-
 log = LoggerWrapper()
-
 
 class BaseComponent(ABC):
 
     model: Union[Any, None] = None
     tokenizer: Union[Any, None] = None
 
-    def __init__(self, model, tokenizer, use_cpu: bool) -> None:
+    def __init__(self, model, tokenizer, use_cpu_only: bool) -> None:
 
         self.model = model
+        self.use_cpu_only = use_cpu_only
 
-        if torch.cuda.is_available() and use_cpu is False:
-            device = self.get_gpu()
-            log("DEVICE : {}".format(device))
+        #TODO find way add correct device with accelerate
+        self.device = None
 
-            self.model.to(device)
-        else:
-            device = 'cpu'
-            self.model.to(device)
+        self.model_distribution()
 
         self.tokenizer = tokenizer
-        self.device = device
 
         assert model is not None, "Exception: NO MODEL"
         assert tokenizer is not None, "Exception: NO TOKENIZER"
@@ -39,11 +38,22 @@ class BaseComponent(ABC):
     def __call__(self, **kwargs): #generate response
         self.model = self.model(**kwargs)
 
-    def get_eos(self):
-        return self.tokenizer.eos_token_id
 
-    def get_pad(self):
-        return self.tokenizer.pad_token_id
+    def model_distribution(self):
+
+        if torch.cuda.is_available() and self.use_cpu_only is False:
+
+            # TODO create condition
+             
+            self.model = self.multi_gpu()
+            device = self.get_gpu()
+            log("DEVICE : {}".format(device))
+
+            self.model.to(device)
+
+        else:
+            device = 'cpu'
+            self.model.to(device)
 
     @abstractmethod
     def generate(self, *kwargs):
@@ -76,20 +86,65 @@ class BaseComponent(ABC):
 
         return "cpu"
 
-    # deepseek generation, set to 30GiB / dont work
     def multi_gpu(self):
-        # Calculate balanced memory allocation
-        max_memory = get_balanced_memory(
-            self.model,
-            max_memory={i: "30GiB" for i in range(torch.cuda.device_count())},
-        )
 
-        # Create device map
-        device_map = infer_auto_device_map(
-            self.model,
-            max_memory=max_memory,
-        )
+        model_accelerate: Optional[nn.Module] = None
 
-        # Dispatch model
-        self.model = dispatch_model(self.model, device_map=device_map)
-        log(f"Device map: {self.model.hf_device_map}")
+        try:
+            weights_location = snapshot_download(repo_id=self.model.name_or_path)
+            log(f"Downloaded model name: {self.model.name_or_path}")
+
+            with init_empty_weights():
+                model_test = self.model
+            model_test.tie_weights()
+
+            device_map = infer_auto_device_map(
+                model_test,
+                max_memory=self.memory_calculation()
+            )
+
+            log(f"Memory distribution: {self.memory_calculation()}")
+
+            model_accelerate = load_checkpoint_and_dispatch(
+                model_test, checkpoint=weights_location, device_map=device_map)
+
+            log(f"Device mapping to memory: {model_accelerate.hf_device_map}")
+
+        except Exception as err:
+            log(err)
+
+        return model_accelerate
+
+    # {0: "13GiB", "cpu": "60GiB"}
+    def memory_calculation(self) -> Dict:
+
+        memory_distribution = {}
+        model_size = self.get_model_size()
+        memory_allocated_overall = 0
+
+        try:
+            for gpu_id in range(torch.cuda.device_count()):
+                memory_available = (torch.cuda.get_device_properties(gpu_id).total_memory / 1024 ** 3 -
+                                    torch.cuda.memory_allocated(gpu_id) / 1024 ** 3)
+
+                memory_allocated_overall += memory_available
+                memory_distribution.update({gpu_id: "{}GiB".format(math.floor(memory_available))})
+
+        except Exception as err:
+            log(err)
+
+        if memory_allocated_overall < model_size:
+            memory_distribution.update({"cpu": "{}GiB".format(math.floor(self.get_free_ram()))})
+
+        return memory_distribution
+
+
+    def get_free_ram(self) -> float:
+        return psutil.virtual_memory().available / 1024 ** 3
+
+
+    def get_eos(self):
+        return self.tokenizer.eos_token_id
+
+    def get_pad(self):
+        return self.tokenizer.pad_token_id

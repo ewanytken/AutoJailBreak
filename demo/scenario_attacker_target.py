@@ -1,4 +1,4 @@
-from core.service import ServiceModel
+from core.service.model_service import ServiceModel
 from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 

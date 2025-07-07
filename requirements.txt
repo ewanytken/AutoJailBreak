@@ -9,3 +9,4 @@ multipledispatch==0.6.0
 accelerate==1.2.0
 pandas==2.2.3
 pathlib==1.0.1
+numpy==1.26.4

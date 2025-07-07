@@ -2,16 +2,20 @@ from typing import Dict, Any, Union, List
 
 from transformers import (
     AutoTokenizer,
-    AutoModelForCausalLM
+    AutoModelForCausalLM, AutoConfig
 )
 
 from .base_component import BaseComponent
 
 class TransformerWrapper(BaseComponent):
 
-    def __init__(self, model_name: str,  max_new_tokens: int, use_cpu: bool = False, system_tag: list = None, **kwargs):
+    def __init__(self, model_name: str, max_new_tokens: int, use_cpu_only: bool = False, system_tag: list = None, **kwargs):
 
-        model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
+        # model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
+
+        config = AutoConfig.from_pretrained(model_name)
+        model = AutoModelForCausalLM.from_config(config, **kwargs)
+
         model = model.eval()
 
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -22,7 +26,7 @@ class TransformerWrapper(BaseComponent):
             self.system_tag = system_tag
 
         self.max_new_tokens = max_new_tokens
-        super().__init__(model, tokenizer, use_cpu)
+        super().__init__(model, tokenizer, use_cpu_only)
 
     def generate(self, inst_prompt: dict):
 
