@@ -2,8 +2,11 @@ from core.service.model_service import ServiceModel
 from core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
-attacker = "Felladrin/TinyMistral-248M-Chat-v3"
-target =   "Felladrin/TinyMistral-248M-Chat-v3"
+# attacker = "Felladrin/TinyMistral-248M-Chat-v3"
+# target =   "Felladrin/TinyMistral-248M-Chat-v3"
+
+attacker = "Qwen/Qwen3-4B"
+target =   "Qwen/Qwen3-4B"
 
 models_name_with_parameters = [
     {'name': attacker,              #ATTACKER

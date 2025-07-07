@@ -11,10 +11,10 @@ class TransformerWrapper(BaseComponent):
 
     def __init__(self, model_name: str, max_new_tokens: int, use_cpu_only: bool = False, system_tag: list = None, **kwargs):
 
-        # model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
+        model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
 
-        config = AutoConfig.from_pretrained(model_name)
-        model = AutoModelForCausalLM.from_config(config, **kwargs)
+        # config = AutoConfig.from_pretrained(model_name)
+        # model = AutoModelForCausalLM.from_config(config, **kwargs)
 
         model = model.eval()
 
