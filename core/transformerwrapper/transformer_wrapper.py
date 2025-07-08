@@ -1,5 +1,7 @@
+from pathlib import Path
 from typing import Dict, Any, Union, List
 
+import yaml
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM, AutoConfig
@@ -11,14 +13,20 @@ class TransformerWrapper(BaseComponent):
 
     def __init__(self, model_name: str, max_new_tokens: int, use_cpu_only: bool = False, system_tag: list = None, **kwargs):
 
-        model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
+        cache_dir_path = Path(__file__).parent.parent.parent / 'config.yaml'
+        with open(cache_dir_path, 'r') as file:
+            cache_dir = yaml.safe_load(file)
+
+        path_to_models = cache_dir['cache_dir']
+
+        model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=path_to_models, **kwargs)
 
         # config = AutoConfig.from_pretrained(model_name)
         # model = AutoModelForCausalLM.from_config(config, **kwargs)
 
         model = model.eval()
 
-        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+        tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=path_to_models, use_fast=True)
 
         if system_tag is None:
             self.system_tag = ['your_role', 'instruction', 'constraint', 'clue', 'context']

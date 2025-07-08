@@ -44,7 +44,7 @@ temp/log-pruning
 createDataset.ipynb
 testIdeaWithWeightOptimization.ipynb
 /wandb/**
-/models
+/models/**
 /datasets/phishing_dataset/
 /datasets/phishing_dataset_full.csv
 **__pycache__

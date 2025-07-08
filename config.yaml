@@ -3,6 +3,8 @@ jailbreak_table_one:
 jailbreak_table_two:
   prompts/jailbreak_prompts_2023_12_25.csv
 
+cache_dir:
+  models/
 address:
   port: 80
   host: "0.0.0.0"
