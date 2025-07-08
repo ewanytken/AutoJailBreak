@@ -58,5 +58,9 @@ class JailBreakController:
 
             return scenario.get_dialog()
 
+        @self.app.get('/info', status_code=200)
+        async def info():
+            return {"message": "Application response"}
+
     def start(self):
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")
