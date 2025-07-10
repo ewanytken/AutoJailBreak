@@ -1,3 +1,20 @@
+  function targetTypeSelector() {
+    const localTargetContainer = document.getElementById('localTargetContainer');
+    const externalTargetContainer = document.getElementById('externalTargetContainer');
+
+    const selectedTarget = document.querySelector('input[name="target"]:checked').value;
+
+    if (selectedTarget === 'local') {
+        localTargetContainer.style.display = 'none';
+        externalTargetContainer.style.display = 'block';
+    }
+    if (selectedTarget === 'external') {
+        localTargetContainer.style.display = 'block';
+        externalTargetContainer.style.display = 'none';
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const submitButton = document.getElementById('submitButton');
     const inputField = document.getElementById('inputField');
