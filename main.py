@@ -1,4 +1,4 @@
-from controller import JailBreakController
+from app.controller import JailBreakController
 
 def main():
     JailBreakController().start()

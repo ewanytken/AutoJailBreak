@@ -1,5 +1,5 @@
-from core.service.model_service import ServiceModel
-from core.service.scenario_service import ScenarioService
+from app.core.service.model_service import ServiceModel
+from app.core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 # attacker = "Felladrin/TinyMistral-248M-Chat-v3"

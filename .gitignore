@@ -37,7 +37,7 @@ build/
 ### Mac OS ###
 .DS_Store
 /model
-/test
+/tests
 temp/enum
 temp/log-pruning
 .ipynb_checkpoints/**

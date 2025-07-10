@@ -3,8 +3,8 @@ from typing import Union, Dict, List
 
 import pandas as pd
 
-from core import LoggerWrapper
-from core.custom_exception import PathTypeError
+from app.core import LoggerWrapper
+from app.core import PathTypeError
 from pathlib import Path
 
 log = LoggerWrapper()

@@ -1,9 +1,8 @@
 from transformers import AutoTokenizer
 
-from core import TargetSpring, TargetOllama
-from core import TransformerWrapper
-from core.service.model_service import ServiceModel
-from core.service.scenario_service import ScenarioService
+from app.core import TargetOllama
+from app.core.service.model_service import ServiceModel
+from app.core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
 name_model = "Felladrin/TinyMistral-248M-Chat-v3"
