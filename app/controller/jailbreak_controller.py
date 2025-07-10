@@ -1,8 +1,16 @@
 import uvicorn
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Request
 import yaml
 from pathlib import Path
+
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+
 from app.core import ScenarioFacade
+from app.models import TextData
+
 
 class JailBreakController:
 
@@ -10,7 +18,18 @@ class JailBreakController:
         self.app = FastAPI()
         self.register_request()
 
-        address_path = Path(__file__).parent.parent / 'config.yaml'
+        self.templates = Jinja2Templates(directory="templates")
+        self.app.mount("/static", StaticFiles(directory="templates/static"), name="static")
+
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
+
+        address_path = Path(__file__).parent.parent.parent / 'config.yaml'
         with open(address_path, 'r') as file:
             address = yaml.safe_load(file)
 
@@ -59,6 +78,18 @@ class JailBreakController:
         @self.app.get('/info', status_code=200)
         async def info():
             return {"message": "Application response"}
+
+        @self.app.post("/api/process")
+        async def process_text(data: TextData):
+            processed_text = f"Processed: {data.text.upper()}"  # Example processing
+            return {"result": processed_text}
+
+        @self.app.get("/index", response_class=HTMLResponse)
+        async def read_root(request: Request):
+
+            return self.templates.TemplateResponse("index.html", {"request": request})
+
+
 
     def start(self):
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")

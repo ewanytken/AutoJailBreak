@@ -4,7 +4,7 @@ from typing import Union, Dict, List
 import pandas as pd
 
 from app.core import LoggerWrapper
-from app.core import PathTypeError
+from app.core.custom_exception import PathTypeError
 from pathlib import Path
 
 log = LoggerWrapper()
