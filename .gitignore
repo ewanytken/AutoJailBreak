@@ -61,3 +61,4 @@ temp/.pytest_cache
 **/__pycache__
 **/log-jailbreak
 **/**/log-jailbreak
+venv/

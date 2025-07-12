@@ -4,11 +4,6 @@ body {
     margin: 0 auto;
     padding: 20px;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
 input, button {
     padding: 10px;
     font-size: 16px;
@@ -28,6 +23,20 @@ button:hover {
     border: 1px solid #ddd;
     border-radius: 4px;
     min-height: 50px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.prompts{
+
+}
+
+.model{
+
 }
 .error {
     color: red;

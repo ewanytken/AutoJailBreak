@@ -7,93 +7,116 @@
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
 </head>
 <body>
-    <h1>Parameters for attack</h1>
+    <h2>ATTACK'S PARAMETERS</h2>
     <div class="container">
-        <label for="inputAttacker">ATTACKER MODEL</label>
-        <input type="text" id="inputAttacker" placeholder="Enter name of model">
-        <label for="attackerMaxToken">ATTACKER MODEL</label>
-        <input type="number" id="attackerMaxToken" value=555 >
-    </div>
-    <div>
-        <label for="attackerRole">Attacker Role</label>
-        <input type="text" id="attackerRole" placeholder="Enter Role">
+        <div class="model">
+            <label for="inputAttacker">ATTACKER MODEL</label>
+            <input type="text" id="inputAttacker" placeholder="Enter name of model">
+            <label for="attackerMaxToken">Max Token</label>
+            <input type="number" id="attackerMaxToken" value=555 >
+        </div>
 
-        <label for="attackerInstruction">Attacker Instruction</label>
-        <input type="text" id="attackerInstruction" placeholder="Enter Instruction">
+        <div class="prompts">
+            <label for="attackerRole">Attacker Role</label>
+            <input type="text" id="attackerRole" placeholder="Enter Role">
 
-        <label for="attackerConstraint">Attacker Constraint</label>
-        <input type="text" id="attackerConstraint" placeholder="Enter Constraint">
+            <label for="attackerInstruction">Attacker Instruction</label>
+            <input type="text" id="attackerInstruction" placeholder="Enter Instruction">
 
-        <label for="attackerQuery">Attacker Instruction</label>
-        <input type="text" id="attackerQuery" placeholder="Enter Harmful Query">
-    </div>
+            <label for="attackerConstraint">Attacker Constraint</label>
+            <input type="text" id="attackerConstraint" placeholder="Enter Constraint">
 
-    <div>
-        <label for="evaluatorRole">Evaluator Role</label>
-        <input type="text" id="evaluatorRole" placeholder="Enter Role">
-
-        <label for="evaluatorInstruction">Evaluator Instruction</label>
-        <input type="text" id="evaluatorInstruction" placeholder="Enter Instruction">
-
-        <label for="evaluatorConstraint">Evaluator Constraint</label>
-        <input type="text" id="evaluatorConstraint" placeholder="Enter Constraint">
+            <label for="attackerQuery">Attacker Instruction</label>
+            <input type="text" id="attackerQuery" placeholder="Enter Harmful Query">
+        </div>
     </div>
 
-    <div>
-        <label for="reattackerRole">Reattacker Role</label>
-        <input type="text" id="reattackerRole" placeholder="Enter Role">
+    <div class="container">
+        <div class="model">
+            <label for="inputEvaluator">EVALUATOR MODEL</label>
+            <input type="text" id="inputEvaluator" placeholder="Enter name of model">
+            <label for="evaluatorMaxToken">Max Token</label>
+            <input type="number" id="evaluatorMaxToken" value=555 >
+        </div>
 
-        <label for="reattackerInstruction">Reattacker Instruction</label>
-        <input type="text" id="reattackerInstruction" placeholder="Enter Instruction">
+        <div class="prompts">
+            <label for="evaluatorRole">Evaluator Role</label>
+            <input type="text" id="evaluatorRole" placeholder="Enter Role">
 
-        <label for="reattackerConstraint">Reattacker Constraint</label>
-        <input type="text" id="reattackerConstraint" placeholder="Enter Constraint">
+            <label for="evaluatorInstruction">Evaluator Instruction</label>
+            <input type="text" id="evaluatorInstruction" placeholder="Enter Instruction">
+
+            <label for="evaluatorConstraint">Evaluator Constraint</label>
+            <input type="text" id="evaluatorConstraint" placeholder="Enter Constraint">
+        </div>
     </div>
 
-    <div>
-        <h4>Local or External Model?</h4>
-        <label>
-            <input type="radio" id="localOption" value="local" name="target" checked onclick="targetTypeSelector()"> Local Model
-        </label>
-        <label>
-            <input type="radio" id="externalOption" value="external" name="target" onclick="targetTypeSelector()"> External Model
-        </label>
+    <div class="container">
+        <div class="model">
+            <label for="inputReattacker">REATTACKER MODEL</label>
+            <input type="text" id="inputReattacker" placeholder="Enter name of model">
+            <label for="reattackerMaxToken">Max Token</label>
+            <input type="number" id="reattackerMaxToken" value=555 >
+        </div>
+
+        <div class="prompts">
+            <label for="reattackerRole">Reattacker Role</label>
+            <input type="text" id="reattackerRole" placeholder="Enter Role">
+
+            <label for="reattackerInstruction">Reattacker Instruction</label>
+            <input type="text" id="reattackerInstruction" placeholder="Enter Instruction">
+
+            <label for="reattackerConstraint">Reattacker Constraint</label>
+            <input type="text" id="reattackerConstraint" placeholder="Enter Constraint">
+        </div>
     </div>
 
-    <div id="localTargetContainer">
-        <label for="localTarget">Enter Local Target Model</label>
-        <input type="text" id="localTarget" name="localTarget">
+    <div class="container">
+            <h4>Local or External Model?</h4>
+            <label>
+                <input type="radio" id="localOption" value="local" name="target" checked onclick="targetTypeSelector()"> Local Model
+            </label>
+            <label>
+                <input type="radio" id="externalOption" value="external" name="target" onclick="targetTypeSelector()"> External Model
+            </label>
+
+        <div id="localTargetContainer">
+            <label for="localTarget">Enter Local Target Model</label>
+            <input type="text" id="localTarget" name="localTarget">
+        </div>
+
+        <div id="externalTargetContainer">
+            <label for="urlTarget">Enter URL</label>
+            <input type="text" id="urlTarget" name="urlTarget">
+
+            <label for="apiKeyTarget">Insert Api Key</label>
+            <input type="text" id="apiKeyTarget" name="apiKeyTarget">
+
+            <label for="modelExternalTarget">Enter Model Name</label>
+            <input type="text" id="modelExternalTarget" name="modelExternalTarget">
+        </div>
     </div>
 
-    <div id="externalTargetContainer">
-        <label for="urlTarget">Enter URL</label>
-        <input type="text" id="urlTarget" name="urlTarget">
-
-        <label for="apiKeyTarget">Insert Api Key</label>
-        <input type="text" id="apiKeyTarget" name="apiKeyTarget">
-
-        <label for="modelExternalTarget">Enter Model Name</label>
-        <input type="text" id="modelExternalTarget" name="modelExternalTarget">
+    <div class="container">
+        <div>
+            <label for="templatePrompt">Prompt Template(Enter number)</label>
+            <input type="number" id="templatePrompt" placeholder="Enter Prompt Template">
+        </div>
+        <div>
+            <label for="numberOfAttempt">Number of Attempt</label>
+            <input type="number" id="numberOfAttempt" placeholder="Enter Attempt">
+        </div>
     </div>
 
-    <div>
-        <label for="templateScenario">Number of Attempt</label>
-        <input type="number" id="templateScenario" placeholder="Enter Scenario Template">
+    <! TODO add additional questions -->
+
+    <div class="attack-button">
+        <button id="attackButton">Attack</button>
     </div>
 
-    <div>
-        <label for="numberOfAttempt">Number of Attempt</label>
-        <input type="number" id="numberOfAttempt" placeholder="Enter Attempt">
+    <div class="response">
+        <div id="dialogResponse">Attack Response</div>
     </div>
-
-    <div>
-        <button id="attackButton">ATTACK</button>
-    </div>
-
-    <div>
-        <div id="dialogResponse">Question-Answer</div>
-    </div>
-
 
     <script src="{{ url_for('static', path='/js/script.js') }}"></script>
 </body>

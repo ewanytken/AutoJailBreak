@@ -60,7 +60,7 @@ class ScenarioService:
 
             log("ATTACK: {}".format(from_attack))
             log("TARGET: {}".format(from_target))
-            log("ATTEMPT: {}".format(self.max_query))
+            log("ATTEMPT REMAIN: {}".format(self.max_query))
 
             if self.max_query > 0 and additional_question is not None:
                 start_to_attacker.update({"clue": additional_question[len_max_query-self.max_query]})
@@ -127,7 +127,7 @@ class ScenarioService:
             log("ATTACK: {}".format(response_attack))
             log("TARGET: {}".format(response_target))
             log("EVALUATOR: {}".format(response_evaluator))
-            log("ATTEMPT: {}".format(self.max_query))
+            log("ATTEMPT REMAIN: {}".format(self.max_query))
 
             result.update({"ATTACK {}".format(self.max_query): "{}".format(response_attack)})
             result.update({"TARGET {}".format(self.max_query): "{}".format(response_target)})
@@ -244,7 +244,7 @@ class ScenarioService:
 
             log("EVALUATOR_FROM_TWO: {}".format(response_evaluator_two))
 
-            log("ATTEMPT: {}".format(self.max_query))
+            log("ATTEMPT REMAIN: {}".format(self.max_query))
 
             result.update({"ATTACKER_ONE {}".format(self.max_query): "{}".format(response_attack_one)})
             result.update({"TARGET {}".format(self.max_query): "{}".format(response_target_one)})

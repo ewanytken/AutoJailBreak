@@ -1,1 +1,1 @@
-from .model_data import TextData
+from .model_data import AttackerParameters

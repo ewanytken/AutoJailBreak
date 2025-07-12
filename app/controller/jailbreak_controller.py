@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.core import ScenarioFacade
-from app.models import TextData
+from app.models import AttackerParameters
 
 
 class JailBreakController:
@@ -77,19 +77,16 @@ class JailBreakController:
 
         @self.app.get('/info', status_code=200)
         async def info():
-            return {"message": "Application response"}
+            return {"version": "AutoJailBreak Service version: 0.0.1"}
 
         @self.app.post("/api/process")
-        async def process_text(data: TextData):
-            processed_text = f"Processed: {data.text.upper()}"  # Example processing
-            return {"result": processed_text}
+        async def process_page(json = Body()):
+            scenario = ScenarioFacade(json)
+            return scenario.get_dialog()
 
         @self.app.get("/index", response_class=HTMLResponse)
-        async def read_root(request: Request):
-
+        async def index_page(request: Request):
             return self.templates.TemplateResponse("index.html", {"request": request})
-
-
 
     def start(self):
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")
