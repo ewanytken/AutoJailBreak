@@ -1,15 +1,14 @@
-import uvicorn
-from fastapi import FastAPI, Body, Request
-import yaml
 from pathlib import Path
 
+import uvicorn
+import yaml
+from fastapi import FastAPI, Body, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from app.core import ScenarioFacade
-from app.models import AttackerParameters
 
 
 class JailBreakController:
@@ -39,11 +38,11 @@ class JailBreakController:
 
     def register_request(self):
 
-        @self.app.post('/auto_jailbreak', status_code=200)
-        def autojailbreak(json = Body()):
+        @self.app.post('/autojailbreak', status_code=200)
+        def auto_jailbreak(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.post('/attacker_target', status_code=200)
         def attacker_target(json = Body()):
@@ -78,11 +77,6 @@ class JailBreakController:
         @self.app.get('/info', status_code=200)
         async def info():
             return {"version": "AutoJailBreak Service version: 0.0.1"}
-
-        @self.app.post("/api/process")
-        async def process_page(json = Body()):
-            scenario = ScenarioFacade(json)
-            return scenario.get_dialog()
 
         @self.app.get("/index", response_class=HTMLResponse)
         async def index_page(request: Request):

@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastAPI Frontend Demo</title>
+    <title>Attack Form</title>
+    <link rel="icon" href="{{ url_for('static', path='/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', path='/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', path='/site.webmanifest') }}">
+
     <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
 </head>
 <body>
@@ -26,12 +32,12 @@
             <label for="attackerConstraint">Attacker Constraint</label>
             <input type="text" id="attackerConstraint" placeholder="Enter Constraint">
 
-            <label for="attackerQuery">Attacker Instruction</label>
+            <label for="attackerQuery">Harmful Query</label>
             <input type="text" id="attackerQuery" placeholder="Enter Harmful Query">
         </div>
     </div>
-
     <div class="container">
+
         <div class="model">
             <label for="inputEvaluator">EVALUATOR MODEL</label>
             <input type="text" id="inputEvaluator" placeholder="Enter name of model">
@@ -50,7 +56,6 @@
             <input type="text" id="evaluatorConstraint" placeholder="Enter Constraint">
         </div>
     </div>
-
     <div class="container">
         <div class="model">
             <label for="inputReattacker">REATTACKER MODEL</label>
@@ -71,41 +76,37 @@
         </div>
     </div>
 
-    <div class="container">
-            <h4>Local or External Model?</h4>
-            <label>
-                <input type="radio" id="localOption" value="local" name="target" checked onclick="targetTypeSelector()"> Local Model
-            </label>
-            <label>
-                <input type="radio" id="externalOption" value="external" name="target" onclick="targetTypeSelector()"> External Model
-            </label>
+    <h4>Local or External Model?</h4>
+    <label>
+        <input type="radio" id="localOption" value="local" name="target" onclick="targetTypeSelector()" checked> Local Model
+    </label>
+    <label>
+        <input type="radio" id="externalOption" value="external" name="target" onclick="targetTypeSelector()"> External Model
+    </label>
 
-        <div id="localTargetContainer">
-            <label for="localTarget">Enter Local Target Model</label>
-            <input type="text" id="localTarget" name="localTarget">
-        </div>
-
-        <div id="externalTargetContainer">
-            <label for="urlTarget">Enter URL</label>
-            <input type="text" id="urlTarget" name="urlTarget">
-
-            <label for="apiKeyTarget">Insert Api Key</label>
-            <input type="text" id="apiKeyTarget" name="apiKeyTarget">
-
-            <label for="modelExternalTarget">Enter Model Name</label>
-            <input type="text" id="modelExternalTarget" name="modelExternalTarget">
-        </div>
+    <div id="localTargetContainer">
+        <label for="localTarget">Enter Local Target Model</label>
+        <input type="text" id="localTarget" name="localTarget">
     </div>
 
-    <div class="container">
-        <div>
-            <label for="templatePrompt">Prompt Template(Enter number)</label>
-            <input type="number" id="templatePrompt" placeholder="Enter Prompt Template">
-        </div>
-        <div>
-            <label for="numberOfAttempt">Number of Attempt</label>
-            <input type="number" id="numberOfAttempt" placeholder="Enter Attempt">
-        </div>
+    <div id="externalTargetContainer">
+        <label for="urlTarget">Enter URL</label>
+        <input type="text" id="urlTarget" name="urlTarget">
+
+        <label for="apiKeyTarget">Insert Api Key</label>
+        <input type="text" id="apiKeyTarget" name="apiKeyTarget">
+
+        <label for="modelExternalTarget">Enter Model Name</label>
+        <input type="text" id="modelExternalTarget" name="modelExternalTarget">
+    </div>
+
+    <div>
+        <label for="templatePrompt">Prompt Template(Enter number)</label>
+        <input type="number" id="templatePrompt" placeholder="Enter Prompt Template">
+    </div>
+    <div>
+        <label for="numberOfAttempt">Number of Attempt</label>
+        <input type="number" id="numberOfAttempt" placeholder="Enter Attempt">
     </div>
 
     <! TODO add additional questions -->
@@ -114,9 +115,7 @@
         <button id="attackButton">Attack</button>
     </div>
 
-    <div class="response">
-        <div id="dialogResponse">Attack Response</div>
-    </div>
+    <div id="dialogResponse">Attack Response</div>
 
     <script src="{{ url_for('static', path='/js/script.js') }}"></script>
 </body>

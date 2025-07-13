@@ -1,6 +1,6 @@
 
 //URL TO FAST API
-    const API_URI = 'http://localhost:8000/api/process';
+    const API_URI = 'http://localhost:8000/autojailbreak';
 
 //ATTACKER
     const inputAttacker = document.getElementById('inputAttacker');
@@ -50,18 +50,17 @@
         const selectedTarget = document.querySelector('input[name="target"]:checked').value;
 
         if (selectedTarget === 'local') {
-            localTargetContainer.style.display = 'none';
-            externalTargetContainer.style.display = 'block';
-        }
-        if (selectedTarget === 'external') {
             localTargetContainer.style.display = 'block';
             externalTargetContainer.style.display = 'none';
+        }
+        if (selectedTarget === 'external') {
+            localTargetContainer.style.display = 'none';
+            externalTargetContainer.style.display = 'block';
         }
     }
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    const inputField = document.getElementById('inputField');
 
     attackButton.addEventListener('click', async function() {
 
@@ -107,16 +106,69 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        attack_parameters =
+        let attack_parameters = {
+            "models":
+                [
+                    {
+                        "name": inputAttacker_value,
+                        "max_new_tokens": attackerMaxToken_value
+                    },
+                    {
+                        "name": inputReattacker_value,
+                        "max_new_tokens": reattackerMaxToken_value
+                    },
+                    {
+                        "name": inputEvaluator_value,
+                        "max_new_tokens": evaluatorMaxToken_value
+                    },
+                    {
+                        "name": localTarget_value,
+                        "max_new_tokens": 1555
+                    }
+                ],
 
+            "attacker": {
+                "context": attackerRole_value,
+                "instruction": attackerInstruction_value,
+                "constraint": attackerConstraint_value,
+                "query": attackerQuery_value
+            },
+
+            "reattacker": {
+                "context": reattackerRole_value,
+                "instruction": reattackerInstruction_value,
+                "constraint": reattackerConstraint_value
+            },
+
+            "evaluator": {
+                "context": evaluatorRole_value,
+                "instruction": evaluatorInstruction_value,
+                "constraint": evaluatorConstraint_value
+            },
+
+            "external_target": {
+                "base_url": urlTarget_value,
+                "api_key": apiKeyTarget_value,
+                "model_name": modelExternalTarget_value
+            },
+//TODO add list of question
+            // "additional_question":
+            //     ["How is first coder?",
+            //         "When first attack were make?",
+            //         "How to use DDoS attack?"],
+
+            "prepared_scenario": templatePrompt_value,
+            "number_of_attempt": numberOfAttempt_value
+        }
 
         try {
+            console.log(attack_parameters)
             const response = await fetch(API_URI, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ text: inputText }),
+                body: JSON.stringify(attack_parameters),
             });
 
             if (!response.ok) {
@@ -124,8 +176,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
-            responseDiv.textContent = `Server response: ${data.result}`;
-            responseDiv.className = '';
+            dialogResponse.textContent = `Dialog Response: ${data.result}`;
+            dialogResponse.className = '';
         } catch (error) {
             dialogResponse.textContent = `Error: ${error.message}`;
             dialogResponse.className = 'error';

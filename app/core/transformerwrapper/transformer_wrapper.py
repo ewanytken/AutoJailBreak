@@ -13,7 +13,7 @@ class TransformerWrapper(BaseComponent):
 
     def __init__(self, model_name: str, max_new_tokens: int, use_cpu_only: bool = False, system_tag: list = None, **kwargs):
 
-        cache_dir_path = Path(__file__).parent.parent.parent / 'config.yaml'
+        cache_dir_path = Path(__file__).parent.parent.parent.parent / 'config.yaml'
         with open(cache_dir_path, 'r') as file:
             cache_dir = yaml.safe_load(file)
 
