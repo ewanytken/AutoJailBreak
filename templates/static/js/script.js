@@ -46,19 +46,51 @@
     function targetTypeSelector() {
         const localTargetContainer = document.getElementById('localTargetContainer');
         const externalTargetContainer = document.getElementById('externalTargetContainer');
+        const gigaTargetContainer = document.getElementById('gigaTargetContainer')
 
         const selectedTarget = document.querySelector('input[name="target"]:checked').value;
 
         if (selectedTarget === 'local') {
             localTargetContainer.style.display = 'block';
             externalTargetContainer.style.display = 'none';
+            gigaTargetContainer.style.display = 'none';
         }
         if (selectedTarget === 'external') {
             localTargetContainer.style.display = 'none';
             externalTargetContainer.style.display = 'block';
+            gigaTargetContainer.style.display = 'none';
+
+        }
+        if (selectedTarget === 'giga') {
+            localTargetContainer.style.display = 'none';
+            externalTargetContainer.style.display = 'none';
+            gigaTargetContainer.style.display = 'block';
         }
     }
 
+    function addModelCheckbox() {
+        const checkboxEvaluator = document.getElementById('checkboxEvaluator');
+        const checkboxReattacker = document.getElementById('checkboxReattacker');
+
+        const evaluatorContainer = document.getElementById('evaluatorContainer');
+        const reattackerContainer = document.getElementById('reattackerContainer');
+
+        // Add event listener to the checkbox
+        checkboxEvaluator.addEventListener('change', function() {
+            if (this.checked) {
+                evaluatorContainer.style.display = 'block';
+            } else {
+                evaluatorContainer.style.display = 'none';
+            }
+        });
+        checkboxReattacker.addEventListener('change', function() {
+            if (this.checked) {
+                reattackerContainer.style.display = 'block';
+            } else {
+                reattackerContainer.style.display = 'none';
+            }
+        });
+    }
 
 document.addEventListener('DOMContentLoaded', function() {
 

@@ -36,7 +36,13 @@
             <input type="text" id="attackerQuery" placeholder="Enter Harmful Query">
         </div>
     </div>
-    <div class="container">
+
+    <div class="checkboxEvaluatorContainer">
+        <input type="checkbox" id="checkboxEvaluator" onclick="addModelCheckbox()">
+        <label for="checkboxEvaluator">Add Evaluator model?</label>
+    </div>
+
+    <div class="container" id="evaluatorContainer" style="display: none;">
 
         <div class="model">
             <label for="inputEvaluator">EVALUATOR MODEL</label>
@@ -56,7 +62,13 @@
             <input type="text" id="evaluatorConstraint" placeholder="Enter Constraint">
         </div>
     </div>
-    <div class="container">
+
+    <div class="checkboxReattackerContainer">
+        <input type="checkbox" id="checkboxReattacker" onclick="addModelCheckbox()">
+        <label for="checkboxReattacker">Add Reattacker model?</label>
+    </div>
+
+    <div class="container" id="reattackerContainer" style="display: none;">
         <div class="model">
             <label for="inputReattacker">REATTACKER MODEL</label>
             <input type="text" id="inputReattacker" placeholder="Enter name of model">
@@ -83,7 +95,9 @@
     <label>
         <input type="radio" id="externalOption" value="external" name="target" onclick="targetTypeSelector()"> External Model
     </label>
-
+    <label>
+        <input type="radio" id="gigaOption" value="giga" name="target" onclick="targetTypeSelector()"> Giga Model
+    </label>
     <div id="localTargetContainer">
         <label for="localTarget">Enter Local Target Model</label>
         <input type="text" id="localTarget" name="localTarget">
@@ -100,10 +114,19 @@
         <input type="text" id="modelExternalTarget" name="modelExternalTarget">
     </div>
 
+    <div id="gigaTargetContainer">
+        <label for="uuidTarget">Enter UUID for GigaChat</label>
+        <input type="text" id="uuidTarget" name="uuidTarget">
+
+        <label for="authorizationTarget">Insert Api Key</label>
+        <input type="text" id="authorizationTarget" name="authorizationTarget">
+    </div>
+
     <div>
         <label for="templatePrompt">Prompt Template(Enter number)</label>
         <input type="number" id="templatePrompt" placeholder="Enter Prompt Template">
     </div>
+
     <div>
         <label for="numberOfAttempt">Number of Attempt</label>
         <input type="number" id="numberOfAttempt" placeholder="Enter Attempt">

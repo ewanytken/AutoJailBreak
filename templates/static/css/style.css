@@ -7,6 +7,7 @@
   --darker: #16213e;
   --light: #f1f1f1;
   --danger: #e94560;
+  --dangergiga: #e945bb;
   --success: #00b894;
   --border-radius: 8px;
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -116,12 +117,18 @@ input[type="radio"] {
 }
 
 #localTargetContainer,
-#externalTargetContainer {
+#externalTargetContainer,
+#gigaTargetContainer {
   background: var(--darker);
   padding: 1.5rem;
   border-radius: var(--border-radius);
   margin-bottom: 1.5rem;
   box-shadow: var(--box-shadow);
+}
+
+#gigaTargetContainer {
+  display: none;
+  border-left: 4px solid var(--dangergiga);
 }
 
 #externalTargetContainer {
