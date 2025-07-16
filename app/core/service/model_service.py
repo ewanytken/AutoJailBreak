@@ -44,7 +44,7 @@ class ServiceModel:
     def add_external_model(self, target) -> None:
         if 2 <= len(self.models) <= 4:
             number_of_models = len(self.models) - 1
-            self.models[number_of_models:] = []                         # remove models more than 3 things
+            self.models[number_of_models:] = []  # remove models more than 3 things
         else:
             self.models[3:] = []
         self.models.insert(len(self.models), target) # model add in end of list

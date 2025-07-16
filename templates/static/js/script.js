@@ -1,6 +1,6 @@
 
 //URL TO FAST API
-    const API_URI = 'http://localhost:8000/autojailbreak';
+    const API_URI = 'http://localhost:8000/test';
 
 //ATTACKER
     const inputAttacker = document.getElementById('inputAttacker');
@@ -37,6 +37,10 @@
 // Number of template and attempts
     const templatePrompt = document.getElementById('templatePrompt');
     const numberOfAttempt = document.getElementById('numberOfAttempt');
+
+// Giga
+    const uuidTarget = document.getElementById("uuidTarget");
+    const authorizationTarget = document.getElementById("authorizationTarget");
 
 // Button and Answer realm
     const attackButton = document.getElementById('attackButton');
@@ -128,73 +132,86 @@ document.addEventListener('DOMContentLoaded', function() {
         const apiKeyTarget_value = apiKeyTarget.value.trim();
         const modelExternalTarget_value = modelExternalTarget.value.trim();
 
+    //Giga
+        const uuidTarget_value = uuidTarget.value.trim();
+        const authorizationTarget_value = authorizationTarget.value.trim();
+
     // Number of template and attempts
         const templatePrompt_value = templatePrompt.value.trim();
         const numberOfAttempt_value = numberOfAttempt.value.trim();
 
-        if (!inputAttacker_value || attackerQuery_value) {
-            dialogResponse.textContent = 'Please enter some text';
+        if (!inputAttacker_value || !attackerQuery_value) {
+            dialogResponse.textContent = 'Please enter Attack model and Attacks tunes';
             dialogResponse.className = 'error';
             return;
         }
 
-        let attack_parameters = {
-            "models":
-                [
-                    {
-                        "name": inputAttacker_value,
-                        "max_new_tokens": attackerMaxToken_value
-                    },
-                    {
-                        "name": inputReattacker_value,
-                        "max_new_tokens": reattackerMaxToken_value
-                    },
-                    {
-                        "name": inputEvaluator_value,
-                        "max_new_tokens": evaluatorMaxToken_value
-                    },
-                    {
-                        "name": localTarget_value,
-                        "max_new_tokens": 1555
-                    }
-                ],
+        let attack_parameters = {"models": []};
 
-            "attacker": {
-                "context": attackerRole_value,
-                "instruction": attackerInstruction_value,
-                "constraint": attackerConstraint_value,
-                "query": attackerQuery_value
-            },
+        if (inputAttacker_value !== '') {
+            attack_parameters["models"].push({"name": inputAttacker_value});
+            attack_parameters["models"].push({"max_new_tokens": attackerMaxToken_value});
+            attack_parameters.attacker = {};
 
-            "reattacker": {
-                "context": reattackerRole_value,
-                "instruction": reattackerInstruction_value,
-                "constraint": reattackerConstraint_value
-            },
+            attack_parameters.attacker.context = attackerRole_value ?? "None";
+            attack_parameters["attacker"].set("instruction",  attackerInstruction_value ?? "None");
+            attack_parameters["attacker"].set("constraint",  attackerConstraint_value ?? "None");
+            attack_parameters["attacker"].set("query",  attackerQuery_value);
+        }
 
-            "evaluator": {
-                "context": evaluatorRole_value,
-                "instruction": evaluatorInstruction_value,
-                "constraint": evaluatorConstraint_value
-            },
+        if (inputReattacker_value !== '') {
+            attack_parameters["models"].push({"name": inputReattacker_value});
+            attack_parameters["models"].push({"max_new_tokens": reattackerMaxToken_value});
+            attack_parameters.set("reattacker", {});
+            attack_parameters["reattacker"].set("context",  reattackerRole_value ?? "None");
+            attack_parameters["reattacker"].set("instruction",  reattackerInstruction_value ?? "None");
+            attack_parameters["reattacker"].set("constraint",  reattackerConstraint_value ?? "None");
+        }
 
-            "external_target": {
-                "base_url": urlTarget_value,
-                "api_key": apiKeyTarget_value,
-                "model_name": modelExternalTarget_value
-            },
-//TODO add list of question
-            // "additional_question":
-            //     ["How is first coder?",
-            //         "When first attack were make?",
-            //         "How to use DDoS attack?"],
-
-            "prepared_scenario": templatePrompt_value,
-            "number_of_attempt": numberOfAttempt_value
+        if (inputEvaluator_value !== '') {
+            attack_parameters["models"].push({"name": inputEvaluator_value});
+            attack_parameters["models"].push({"max_new_tokens": evaluatorMaxToken_value});
+            attack_parameters.set("evaluator", {});
+            attack_parameters["evaluator"].set("context",  evaluatorRole_value ?? "None");
+            attack_parameters["evaluator"].set("instruction",  evaluatorInstruction_value ?? "None");
+            attack_parameters["evaluator"].set("constraint",  evaluatorConstraint_value ?? "None");
         }
 
         try {
-            console.log(attack_parameters)
+            if (localTarget_value !== '') {
+                attack_parameters["models"].push({"name": inputEvaluator_value});
+                attack_parameters["models"].push({"max_new_tokens": 1555});
+            }
+            else if ((urlTarget_value || uuidTarget_value) !== '') {
+                attack_parameters.set("external_target", {})
+                if ((urlTarget_value && apiKeyTarget_value && modelExternalTarget_value) !== '') {
+                    attack_parameters["external_target"].set("base_url", urlTarget_value);
+                    attack_parameters["external_target"].set("api_key", apiKeyTarget_value);
+                    attack_parameters["external_target"].set("model_name", modelExternalTarget_value);
+                }
+                else if ((uuidTarget_value && authorizationTarget_value) !== ''){
+                    attack_parameters["external_target"].set("authorization", authorizationTarget_value);
+                    attack_parameters["external_target"].set("uuid", uuidTarget_value);
+                }
+                else {
+                    throw new Error("External model assignment ERROR");
+                }
+            }
+            else{
+                throw new Error("Target Model assignment ERROR");
+            }
+        } catch (error) {
+            console.error('Target Model assignment ERROR: ', error);
+        }
+
+        if (templatePrompt_value !== '') {
+            attack_parameters.set("prepared_scenario", templatePrompt_value)
+        }
+        if (numberOfAttempt_value !== '') {
+            attack_parameters.set("number_of_attempt", numberOfAttempt_value)
+        }
+
+        try {
             const response = await fetch(API_URI, {
                 method: 'POST',
                 headers: {

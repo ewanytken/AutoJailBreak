@@ -82,5 +82,10 @@ class JailBreakController:
         async def index_page(request: Request):
             return self.templates.TemplateResponse("index.html", {"request": request})
 
+        @self.app.post('/test', status_code=200)
+        def auto_jailbreak(json = Body()):
+            print(json)
+            return {"result": json}
+
     def start(self):
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")
