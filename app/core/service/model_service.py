@@ -31,8 +31,8 @@ class ServiceModel:
                 "eos_token_id": tokenizer.eos_token_id
             }
 
-            if model['max_new_tokens'] is None:
-                model['max_new_tokens'] = 555
+            if not ('max_new_tokens' in model) or (model['max_new_tokens'] is None):
+                model['max_new_tokens'] = 1555
 
             self.models.append(TransformerWrapper(model_name=model['name'],
                                                   max_new_tokens=model['max_new_tokens'],

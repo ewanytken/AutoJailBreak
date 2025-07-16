@@ -117,5 +117,5 @@ class ScenarioFacade:
         except Exception as err:
             log(f"Exception occurred, scenario don't start: {err}")
 
-    def get_dialog(self):
+    def get_dialog(self) -> dict:
         return self.dialog

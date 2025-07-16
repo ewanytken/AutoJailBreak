@@ -42,7 +42,7 @@ class JailBreakController:
         def auto_jailbreak(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return {"result": scenario.get_dialog()}
+            return {"result": "{}".format(scenario.get_dialog())}
 
         @self.app.post('/attacker_target', status_code=200)
         def attacker_target(json = Body()):

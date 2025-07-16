@@ -1,6 +1,6 @@
 
 //URL TO FAST API
-    const API_URI = 'http://localhost:8000/test';
+    const API_URI = 'http://localhost:8000/autojailbreak';
 
 //ATTACKER
     const inputAttacker = document.getElementById('inputAttacker');
@@ -146,52 +146,62 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        if (!localTarget_value && !urlTarget_value && !uuidTarget_value) {
+            dialogResponse.textContent = 'Please enter Attack model, Attacks tunes and Target Model';
+            dialogResponse.className = 'error';
+            return;
+        }
+
         let attack_parameters = {"models": []};
 
         if (inputAttacker_value !== '') {
-            attack_parameters["models"].push({"name": inputAttacker_value});
-            attack_parameters["models"].push({"max_new_tokens": attackerMaxToken_value});
+            attack_parameters["models"].push({"name": inputAttacker_value,
+                                              "max_new_tokens": Number(attackerMaxToken_value)});
+
             attack_parameters.attacker = {};
 
             attack_parameters.attacker.context = attackerRole_value ?? "None";
-            attack_parameters["attacker"].set("instruction",  attackerInstruction_value ?? "None");
-            attack_parameters["attacker"].set("constraint",  attackerConstraint_value ?? "None");
-            attack_parameters["attacker"].set("query",  attackerQuery_value);
+            attack_parameters.attacker.instruction = attackerInstruction_value ?? "None";
+            attack_parameters.attacker.constraint = attackerConstraint_value ?? "None";
+            attack_parameters.attacker.query = attackerQuery_value;
         }
 
         if (inputReattacker_value !== '') {
-            attack_parameters["models"].push({"name": inputReattacker_value});
-            attack_parameters["models"].push({"max_new_tokens": reattackerMaxToken_value});
-            attack_parameters.set("reattacker", {});
-            attack_parameters["reattacker"].set("context",  reattackerRole_value ?? "None");
-            attack_parameters["reattacker"].set("instruction",  reattackerInstruction_value ?? "None");
-            attack_parameters["reattacker"].set("constraint",  reattackerConstraint_value ?? "None");
+            attack_parameters["models"].push({"name": inputReattacker_value,
+                                              "max_new_tokens": Number(reattackerMaxToken_value)});
+
+            attack_parameters.reattacker = {};
+
+            attack_parameters.reattacker.context = reattackerRole_value ?? "None";
+            attack_parameters.reattacker.instruction = reattackerInstruction_value ?? "None";
+            attack_parameters.reattacker.constraint = reattackerConstraint_value ?? "None";
         }
 
         if (inputEvaluator_value !== '') {
-            attack_parameters["models"].push({"name": inputEvaluator_value});
-            attack_parameters["models"].push({"max_new_tokens": evaluatorMaxToken_value});
-            attack_parameters.set("evaluator", {});
-            attack_parameters["evaluator"].set("context",  evaluatorRole_value ?? "None");
-            attack_parameters["evaluator"].set("instruction",  evaluatorInstruction_value ?? "None");
-            attack_parameters["evaluator"].set("constraint",  evaluatorConstraint_value ?? "None");
-        }
+            attack_parameters["models"].push({"name": inputEvaluator_value,
+                                              "max_new_tokens": Number(evaluatorMaxToken_value)});
+
+            attack_parameters.evaluator = {};
+
+            attack_parameters.evaluator.context = evaluatorRole_value ?? "None";
+            attack_parameters.evaluator.instruction = evaluatorInstruction_value ?? "None";
+            attack_parameters.evaluator.constraint = evaluatorConstraint_value ?? "None";
+       }
 
         try {
             if (localTarget_value !== '') {
-                attack_parameters["models"].push({"name": inputEvaluator_value});
-                attack_parameters["models"].push({"max_new_tokens": 1555});
+                attack_parameters["models"].push({"name": localTarget_value});
             }
             else if ((urlTarget_value || uuidTarget_value) !== '') {
-                attack_parameters.set("external_target", {})
+                attack_parameters.external_target = {}
                 if ((urlTarget_value && apiKeyTarget_value && modelExternalTarget_value) !== '') {
-                    attack_parameters["external_target"].set("base_url", urlTarget_value);
-                    attack_parameters["external_target"].set("api_key", apiKeyTarget_value);
-                    attack_parameters["external_target"].set("model_name", modelExternalTarget_value);
+                    attack_parameters.external_target.base_url = urlTarget_value;
+                    attack_parameters.external_target.api_key = apiKeyTarget_value;
+                    attack_parameters.external_target.model_name = modelExternalTarget_value;
                 }
                 else if ((uuidTarget_value && authorizationTarget_value) !== ''){
-                    attack_parameters["external_target"].set("authorization", authorizationTarget_value);
-                    attack_parameters["external_target"].set("uuid", uuidTarget_value);
+                    attack_parameters.external_target.authorization = authorizationTarget_value;
+                    attack_parameters.external_target.uuid = uuidTarget_value;
                 }
                 else {
                     throw new Error("External model assignment ERROR");
@@ -205,10 +215,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (templatePrompt_value !== '') {
-            attack_parameters.set("prepared_scenario", templatePrompt_value)
+            attack_parameters.prepared_scenario = Number(templatePrompt_value);
         }
         if (numberOfAttempt_value !== '') {
-            attack_parameters.set("number_of_attempt", numberOfAttempt_value)
+            attack_parameters.number_of_attempt = Number(numberOfAttempt_value);
         }
 
         try {
@@ -227,6 +237,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             dialogResponse.textContent = `Dialog Response: ${data.result}`;
             dialogResponse.className = '';
+
+            data.result.forEach(x => {
+                console.log(`${x.key}: ${x.value}`);
+});
         } catch (error) {
             dialogResponse.textContent = `Error: ${error.message}`;
             dialogResponse.className = 'error';
