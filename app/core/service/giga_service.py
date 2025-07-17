@@ -1,4 +1,7 @@
+import json
+
 import requests
+
 
 class GigaRest:
 
@@ -6,6 +9,7 @@ class GigaRest:
         self.token = self._token_obtain(authorization, uuid)
 
     def _token_obtain(self, authorization: str, uuid: str) -> str:
+        token = None
         try:
             uri = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
             headers={
@@ -16,14 +20,16 @@ class GigaRest:
             }
 
             token = requests.post(uri,
-                          data="scope=GIGACHAT_API_PERS",
-                          headers=headers)
-        except:
-            raise RuntimeError
+                                  verify=False,
+                                  data="scope=GIGACHAT_API_PERS",
+                                  headers=headers)
+        except Exception as e:
+            print(e)
 
-        return token.text
+        return token.json()["access_token"]
 
     def get_message(self, message: str, system_message: str = None) -> str:
+        response = None
 
         try:
             uri = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
@@ -57,15 +63,16 @@ class GigaRest:
             }
 
             response = requests.post(uri,
-                          data=json_payload,
-                          headers=headers)
+                                     verify=False,
+                                     data=json.dumps(json_payload),
+                                     headers=headers)
 
-        except:
-            raise RuntimeError
+        except Exception as e:
+            print(e)
 
         assert response is not None, "Empty response from GigaChat"
 
-        return response.text
+        return response.json()["choices"][0]["message"]["content"]
 
 class ResponseFromService:
 

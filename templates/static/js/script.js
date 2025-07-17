@@ -238,9 +238,9 @@ document.addEventListener('DOMContentLoaded', function() {
             dialogResponse.textContent = `Dialog Response: ${data.result}`;
             dialogResponse.className = '';
 
-            data.result.forEach(x => {
-                console.log(`${x.key}: ${x.value}`);
-});
+            // data.result.forEach(x => {
+            //     console.log(`${x.key}: ${x.value}`);
+
         } catch (error) {
             dialogResponse.textContent = `Error: ${error.message}`;
             dialogResponse.className = 'error';
