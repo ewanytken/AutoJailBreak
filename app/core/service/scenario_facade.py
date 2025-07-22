@@ -1,5 +1,6 @@
+import gc
 from typing import Optional, List, Dict
-
+import torch
 from app.core import TargetOtherService, LoggerWrapper
 from app.core.custom_exception import KeyNotFoundError, ScenarioParametersError
 
@@ -116,6 +117,13 @@ class ScenarioFacade:
 
         except Exception as err:
             log(f"Exception occurred, scenario don't start: {err}")
+        finally:
+            self.clear_gpu_memory()
 
     def get_dialog(self) -> dict:
         return self.dialog
+
+    def clear_gpu_memory(self):
+        gc.collect()
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats()

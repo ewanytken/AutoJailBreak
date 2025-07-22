@@ -1,7 +1,7 @@
 import os
 
 from app.core import TargetOtherService
-from app.core import ServiceModel
+from app.core.service.model_service import ServiceModel
 from app.core.service.scenario_service import ScenarioService
 from prompter import BasePrompt, PromptServiceBuilder
 
