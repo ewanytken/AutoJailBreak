@@ -42,37 +42,38 @@ class JailBreakController:
         def auto_jailbreak(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return {"result": "{}".format(scenario.get_dialog())}
+            return {"result": scenario.get_dialog()}
+            # return {"result": "{}".format(scenario.get_dialog())} string format for JS
 
         @self.app.post('/attacker_target', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.post('/attacker_target_evaluator', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.post('/attackers_target_evaluator', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.post('/external_model', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.post('/giga_model', status_code=200)
         def attacker_target(json = Body()):
             scenario = ScenarioFacade(json)
 
-            return scenario.get_dialog()
+            return {"result": scenario.get_dialog()}
 
         @self.app.get('/info', status_code=200)
         async def info():

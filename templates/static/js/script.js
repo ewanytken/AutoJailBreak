@@ -95,7 +95,38 @@
             }
         });
     }
+    function displayJsonResponse(jsonData) {
 
+        const responseDiv = document.getElementById('dialogResponse');
+        let html = '<div class="json-container">';
+        const groups = {};
+
+        Object.entries(jsonData).forEach(([key, value]) => {
+            const groupNum = key.match(/\d+$/)?.[0] || '0';
+
+            if (!groups[groupNum]) groups[groupNum] = [];
+
+            groups[groupNum].push({ key, value });
+        });
+
+        Object.entries(groups).forEach(([groupNum, items]) => {
+            html += `<div class="json-group" data-group="ATTEMPT ${groupNum}">`;
+
+            items.forEach(item => {
+                html += `
+                <div class="json-item">
+                    <span class="json-key">"${item.key}"</span>
+                    <span class="json-value">"${item.value.trim()}"</span>
+                </div>
+                `;
+            });
+            html += '</div>';
+        });
+
+      html += '</div>';
+
+      responseDiv.innerHTML = html;
+    }
 document.addEventListener('DOMContentLoaded', function() {
 
     attackButton.addEventListener('click', async function() {
@@ -235,11 +266,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
-            dialogResponse.textContent = `Dialog Response: ${data.result}`;
-            dialogResponse.className = '';
 
-            // data.result.forEach(x => {
-            //     console.log(`${x.key}: ${x.value}`);
+            // dialogResponse.textContent = `Dialog Response: ${data.result}`; old option
+
+            displayJsonResponse(data.result)
+            dialogResponse.className = '';
 
         } catch (error) {
             dialogResponse.textContent = `Error: ${error.message}`;

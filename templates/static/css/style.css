@@ -223,3 +223,95 @@ label[for="checkboxEvaluator"] {
     transition: background-color 0.3s;
 }
 
+#response {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  background-color: #1e1e2e;
+  color: #f8f8f2;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid #6e48aa;
+  overflow-x: auto;
+  counter-reset: item-counter;
+}
+
+/* JSON container styling */
+.json-container {
+  position: relative;
+  padding-left: 2em;
+}
+
+/* Key-value pair styling */
+.json-item {
+  display: flex;
+  margin-bottom: 0.5rem;
+  position: relative;
+  animation: fadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.json-key {
+  color: #50fa7b;
+  font-weight: 500;
+  min-width: 200px;
+  position: relative;
+  padding-right: 1rem;
+}
+
+.json-key::before {
+  counter-increment: item-counter;
+  content: counter(item-counter) ".";
+  position: absolute;
+  left: -2em;
+  color: #6272a4;
+  font-size: 0.9em;
+}
+
+.json-value {
+  color: #bd93f9;
+  flex-grow: 1;
+}
+
+/* Group separator */
+.json-group {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #44475a;
+  position: relative;
+}
+
+.json-group::before {
+  content: attr(data-group);
+  position: absolute;
+  top: -1.8em;
+  left: 0;
+  font-size: 0.8em;
+  color: #ff79c6;
+  background: #282a36;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .json-item {
+    flex-direction: column;
+  }
+
+  .json-key {
+    min-width: auto;
+    margin-bottom: 0.25rem;
+  }
+
+  #response {
+    padding: 1rem;
+    font-size: 0.9em;
+  }
+}
