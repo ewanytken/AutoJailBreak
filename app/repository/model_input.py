@@ -40,4 +40,6 @@ class AttackerParameters(BaseModel):
     template_prompt: Optional[int] = None
     number_attempt: Optional[int] = None
 
+    class Config:
+        from_attributes = True
 

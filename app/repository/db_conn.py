@@ -5,8 +5,8 @@ import yaml
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
 class DatabaseConnection:
+
     def __init__(self, database_name: Optional[str] = "postgresql"):
 
         database_path = Path(__file__).parent.parent.parent / 'config.yaml'
@@ -28,3 +28,6 @@ class DatabaseConnection:
             yield self.session()
         finally:
             self.session().close()
+
+class DatabaseInterface(DatabaseConnection):
+    pass

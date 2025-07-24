@@ -1,19 +1,21 @@
-from model_input import AttackerParameters
-from model_output import Dialog
+import entity_table
+import model_output
+import model_input
 
 class DatabaseService:
+
     def __init__(self, database_instance):
         self.database_instance = database_instance
 
     def get_dialog_by_id(self, param_id: int):
-        return self.database_instance.query(Dialog).filter(Dialog.id == param_id).first()
+        return self.database_instance.query(entity_table.Dialog).filter(entity_table.Dialog.id == param_id).first()
 
     def get_dialogs(self, skip: int = 0, limit: int = 100):
-        return self.database_instance.query(Dialog).offset(skip).limit(limit).all()
+        return self.database_instance.query(entity_table.Dialog).offset(skip).limit(limit).all()
 
-    def add_dialog(self, dialog: Dialog):
-        db_dialog = Dialog(
-            dialog = dialog.dialog,
+    def add_dialog(self, dialog_out: model_output.Dialog):
+        db_dialog = entity_table.Dialog(
+            dialog = dialog_out.dialog,
         )
         self.database_instance.add(db_dialog)
         self.database_instance.commit()
@@ -21,13 +23,13 @@ class DatabaseService:
 
 
     def get_attack_parameter_by_id(self, param_id: int):
-        return self.database_instance.query(AttackerParameters).filter(AttackerParameters.id == param_id).first()
+        return self.database_instance.query(entity_table.AttackerParameters).filter(entity_table.AttackerParameters.id == param_id).first()
 
     def get_users(self, skip: int = 0, limit: int = 100):
-        return self.database_instance.query(AttackerParameters).offset(skip).limit(limit).all()
+        return self.database_instance.query(entity_table.AttackerParameters).offset(skip).limit(limit).all()
 
-    def add_attack_parameter(self, attacker_parameter: AttackerParameters):
-        db_attacker_parameters = AttackerParameters(
+    def add_attack_parameter(self, attacker_parameter: model_input.AttackerParameters):
+        db_attacker_parameters = entity_table.AttackerParameters(
             attacker = attacker_parameter.attacker,
             max_token_attacker = attacker_parameter.max_token_attacker,
 
