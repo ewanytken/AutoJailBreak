@@ -9,3 +9,11 @@ address:
   port: 8000
   host: "127.0.0.1"
 
+database_parameters:
+  user: "postgres"
+  password: "root"
+  host: "localhost"
+  port: "5432"
+  database: "mydb"
+
+
