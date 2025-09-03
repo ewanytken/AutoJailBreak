@@ -6,3 +6,4 @@ demo
 .git
 models
 venv
+.venv
