@@ -51,6 +51,7 @@ class BaseComponent(ABC):
                         log(f"Free VRAM: {free_vram}")
                         self.device = "cuda:{}".format(gpu_id)
                         self.model.to(self.device)
+                        break
                     else:
                         self.model = self.multi_gpu()
             except:
