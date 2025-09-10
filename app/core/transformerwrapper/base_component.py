@@ -92,7 +92,7 @@ class BaseComponent(ABC):
         self.device = model_accelerate.device
         return model_accelerate
 
-    # {0: "13GiB", "cpu": "60GiB"}
+    # Example {0: "13GiB", "cpu": "60GiB"}
     def memory_calculation(self) -> Dict:
 
         memory_distribution: Optional[Dict] = {}
@@ -113,7 +113,7 @@ class BaseComponent(ABC):
 
         if memory_allocated_overall < model_size:
             memory_distribution.update({"cpu": "{}GiB".format(math.floor(self.get_free_ram()))})
-
+        log(memory_distribution)
         return memory_distribution
 
     def get_model_size(self) -> float:
