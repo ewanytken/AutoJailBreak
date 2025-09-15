@@ -24,7 +24,7 @@ class MultiRunPattern:
             self.request_service(self.path_to_attack_pattern[pattern])
 
     def set_patterns(self, name_of_dir: str = 'attack_json') -> None:
-        dir_path = Path(__file__).parent.parent.parent / name_of_dir
+        dir_path = Path.cwd().parent.parent / name_of_dir
         self.path_to_attack_pattern = [os.path.join(dir_path, entry) for entry in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, entry))]
         self.number_of_pattern = len(self.path_to_attack_pattern)
         log("Number of patterns: {}".format(self.number_of_pattern))
@@ -51,3 +51,6 @@ class MultiRunPattern:
         log("Connection to: http://" + str(host) + ":" + str(port) + "/" + str(handler))
         return "http://" + str(host) + ":" + str(port) + "/" + str(handler)
 
+
+mrp = MultiRunPattern("autojailbreak")
+mrp.start_patterns_attack()

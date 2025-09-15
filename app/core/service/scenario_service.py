@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Optional
 import json
 from app.core.custom_exception import ParametersAssignError
@@ -71,7 +72,7 @@ class ScenarioService:
             result.update({"TARGET {}".format(self.max_query): "{}".format(from_target)})
 
             self.max_query -= 1
-            
+
         ScenarioService.save_attack_result(result)
         return result
 
@@ -264,6 +265,9 @@ class ScenarioService:
 
     @staticmethod
     def save_attack_result(result:Optional[dict]) -> None:
-        file_name = f"attack_result_{uuid.uuid4()}.json"
+        dir_to_save = Path.cwd().parent.parent.parent / 'attack_result'
+        dir_to_save.mkdir(exist_ok=True)
+
+        file_name = dir_to_save / f"attack_result_{uuid.uuid4()}.json"
         with open(file_name, 'w') as file:
             json.dump(result, file, indent=4)
