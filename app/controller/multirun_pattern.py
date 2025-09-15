@@ -37,6 +37,9 @@ class MultiRunPattern:
                       json=json_payload,
                       headers={"Content-Type": "application/json"})
 
+    def get_number_of_pattern(self):
+        return self.number_of_pattern
+
     @staticmethod
     def get_service_uri(handler: str) -> str:
         address_path = Path.cwd().parent.parent / 'config.yaml'

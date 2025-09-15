@@ -1,2 +1,3 @@
 
 from .jailbreak_controller import JailBreakController
+from .multirun_pattern import MultiRunPattern
