@@ -1,9 +1,11 @@
 from typing import Optional
-
+import json
 from app.core.custom_exception import ParametersAssignError
 from app.core import LoggerWrapper
 from app.core.service.model_service import ServiceModel
 from prompter import PromptService
+import uuid
+
 
 log = LoggerWrapper()
 
@@ -69,7 +71,8 @@ class ScenarioService:
             result.update({"TARGET {}".format(self.max_query): "{}".format(from_target)})
 
             self.max_query -= 1
-
+            
+        ScenarioService.save_attack_result(result)
         return result
 
 
@@ -135,6 +138,7 @@ class ScenarioService:
 
             self.max_query -= 1
 
+        ScenarioService.save_attack_result(result)
         return result
 
     def attackers_to_target_with_evaluator(self) -> dict[str, str]:
@@ -255,4 +259,11 @@ class ScenarioService:
 
             self.max_query -= 1
 
+        ScenarioService.save_attack_result(result)
         return result
+
+    @staticmethod
+    def save_attack_result(result:Optional[dict]) -> None:
+        file_name = f"attack_result_{uuid.uuid4()}.json"
+        with open(file_name, 'w') as file:
+            json.dump(result, file, indent=4)

@@ -88,7 +88,7 @@ class JailBreakController:
 
         @self.app.get('/info', status_code=200)
         async def info():
-            return {"version": "AutoJailBreak Service version: 0.0.1"}
+            return {"version": "AutoJailBreak Service version: 0.0.2"}
 
         @self.app.post('/test', status_code=200)
         def auto_jailbreak(json = Body()):
