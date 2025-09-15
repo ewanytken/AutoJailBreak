@@ -50,7 +50,3 @@ class MultiRunPattern:
         port = address['address']['port']
         log("Connection to: http://" + str(host) + ":" + str(port) + "/" + str(handler))
         return "http://" + str(host) + ":" + str(port) + "/" + str(handler)
-
-
-mrp = MultiRunPattern("autojailbreak")
-mrp.start_patterns_attack()

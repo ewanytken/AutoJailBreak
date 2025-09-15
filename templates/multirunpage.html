@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiRun Form</title>
+    <link rel="icon" href="{{ url_for('static', path='/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', path='/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='/favicon-32x32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', path='/site.webmanifest') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style_multirun.css') }}">
+</head>
+<body>
+    <h2>MULTIRUN PARAMETERS</h2>
+    <div class="container">
+        <div class="multi-run">
+            <label for="path">Path to JSON attack files</label>
+            <input type="text" id="path" placeholder="Enter path to JSON files" value="attack_json">
+            <label for="handler">Using service handler</label>
+            <input type="text" id="handler" value="autojailbreak" >
+        </div>
+    </div>
+
+    <div class="run-button">
+        <button id="runButton">Attack</button>
+    </div>
+
+</body>
+</html>

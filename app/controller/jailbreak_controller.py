@@ -105,5 +105,9 @@ class JailBreakController:
             mrp.start_patterns_attack()
             return {"result": "{} patterns complete".format(mrp.get_number_of_pattern())}
 
+        @self.app.get("/multirunpage", response_class=HTMLResponse)
+        async def multirun_page(request: Request):
+            return self.templates.TemplateResponse("multirunpage.html", {"request": request})
+
     def start(self):
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")
