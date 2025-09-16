@@ -73,6 +73,9 @@ class ScenarioService:
 
             self.max_query -= 1
 
+        # attacker.cleanup_memory()
+        # target.cleanup_memory()
+
         ScenarioService.save_attack_result(result)
         return result
 
@@ -265,7 +268,8 @@ class ScenarioService:
 
     @staticmethod
     def save_attack_result(result:Optional[dict]) -> None:
-        dir_to_save = Path.cwd().parent.parent.parent / 'attack_result'
+        # dir_to_save = Path.cwd().parent.parent.parent / 'attack_result'
+        dir_to_save = Path.cwd() / 'attack_result'
         dir_to_save.mkdir(exist_ok=True)
 
         file_name = dir_to_save / f"attack_result_{uuid.uuid4()}.json"

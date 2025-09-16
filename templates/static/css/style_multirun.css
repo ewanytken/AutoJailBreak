@@ -32,9 +32,10 @@ body {
 .attack-hyperlink {
   color: var(--primary);
   margin-bottom: 1.5rem;
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-size: 1.5rem;
 }
 
 h2, h4 {

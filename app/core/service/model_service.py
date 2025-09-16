@@ -2,7 +2,6 @@ from typing import Optional
 from transformers import AutoTokenizer
 from app.core import TransformerWrapper
 
-
 class ServiceModel:
 
     models: Optional[list] = []
@@ -38,7 +37,7 @@ class ServiceModel:
                                                   max_new_tokens=model['max_new_tokens'],
                                                   **parameter_to_generate))
 
-    def get_models(self):
+    def get_models(self) -> list:
         return self.models
 
     def add_external_model(self, target) -> None:

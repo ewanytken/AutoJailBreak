@@ -1,6 +1,6 @@
 
 //URL TO FAST API
-    const API_URI = 'http://localhost:8000/autojailbreak';
+    const API_URI = 'http://localhost:8800/autojailbreak';
 
 //ATTACKER
     const inputAttacker = document.getElementById('inputAttacker');

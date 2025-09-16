@@ -24,7 +24,9 @@ class MultiRunPattern:
             self.request_service(self.path_to_attack_pattern[pattern])
 
     def set_patterns(self, name_of_dir: str = 'attack_json') -> None:
-        dir_path = Path.cwd().parent.parent / name_of_dir
+        dir_path = Path.cwd() / name_of_dir
+        # dir_path = Path.cwd().parent.parent / name_of_dir
+
         self.path_to_attack_pattern = [os.path.join(dir_path, entry) for entry in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, entry))]
         self.number_of_pattern = len(self.path_to_attack_pattern)
         log("Number of patterns: {}".format(self.number_of_pattern))
@@ -42,7 +44,9 @@ class MultiRunPattern:
 
     @staticmethod
     def get_service_uri(handler: str) -> str:
-        address_path = Path.cwd().parent.parent / 'config.yaml'
+        # address_path = Path.cwd().parent.parent / 'config.yaml'
+        address_path = Path.cwd() / 'config.yaml'
+
         with open(address_path, 'r') as file:
             address = yaml.safe_load(file)
 

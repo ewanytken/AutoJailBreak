@@ -72,3 +72,6 @@ class TransformerWrapper(BaseComponent):
             list_of_dict.append(chat)
 
         return list_of_dict
+
+    def cleanup_memory(self):
+        del self.model
