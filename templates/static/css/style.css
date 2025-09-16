@@ -45,6 +45,13 @@ h2 {
   color: transparent;
   margin-bottom: 2rem;
 }
+.multirun-hyperlink {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
 
 .container {
   display: grid;

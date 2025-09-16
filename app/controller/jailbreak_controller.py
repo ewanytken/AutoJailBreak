@@ -50,7 +50,6 @@ class JailBreakController:
             scenario = ScenarioFacade(json)
 
             return {"result": scenario.get_dialog()}
-            # return {"result": "{}".format(scenario.get_dialog())} string format for JS
 
         @self.app.post('/attacker_target', status_code=200)
         def attacker_target(json = Body()):
