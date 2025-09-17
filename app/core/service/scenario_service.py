@@ -74,7 +74,7 @@ class ScenarioService:
             self.max_query -= 1
 
         ScenarioService.save_attack_result(result)
-        self.model_cleaner(self.models)
+        self.model_cleaner()
 
         return result
 
@@ -141,7 +141,7 @@ class ScenarioService:
             self.max_query -= 1
 
         ScenarioService.save_attack_result(result)
-        self.model_cleaner(self.models)
+        self.model_cleaner()
 
         return result
 
@@ -264,6 +264,8 @@ class ScenarioService:
             self.max_query -= 1
 
         ScenarioService.save_attack_result(result)
+        self.model_cleaner()
+
         return result
 
     @staticmethod
@@ -276,6 +278,7 @@ class ScenarioService:
         with open(file_name, 'w') as file:
             json.dump(result, file, indent=4)
 
-    def model_cleaner(self, models:Optional[ServiceModel]) -> None:
-        [model.cleanup_memory() for model in models.get_models()]
+    def model_cleaner(self) -> None:
+        # Delete models from memory and clean list with model in ServiceModel
+        [model.cleanup_memory() for model in self.models.get_models()]
         self.models.model_list_cleaning()
