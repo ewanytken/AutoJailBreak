@@ -126,4 +126,5 @@ class ScenarioFacade:
     def clear_gpu_memory(self):
         gc.collect()
         torch.cuda.empty_cache()
-        torch.cuda.reset_peak_memory_stats()
+        del self.models
+        del self.models_name

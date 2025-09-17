@@ -47,3 +47,6 @@ class ServiceModel:
         else:
             self.models[3:] = []
         self.models.insert(len(self.models), target) # model add in end of list
+
+    def model_list_cleaning(self):
+        del self.models[:]

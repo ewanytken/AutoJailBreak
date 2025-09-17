@@ -73,12 +73,10 @@ class ScenarioService:
 
             self.max_query -= 1
 
-        # attacker.cleanup_memory()
-        # target.cleanup_memory()
-
         ScenarioService.save_attack_result(result)
-        return result
+        self.model_cleaner(self.models)
 
+        return result
 
     def attacker_to_target_with_evaluator(self, additional_question: list = None, use_model_answer: bool = True) -> dict[str, str] | None:
 
@@ -143,6 +141,8 @@ class ScenarioService:
             self.max_query -= 1
 
         ScenarioService.save_attack_result(result)
+        self.model_cleaner(self.models)
+
         return result
 
     def attackers_to_target_with_evaluator(self) -> dict[str, str]:
@@ -275,3 +275,7 @@ class ScenarioService:
         file_name = dir_to_save / f"attack_result_{uuid.uuid4()}.json"
         with open(file_name, 'w') as file:
             json.dump(result, file, indent=4)
+
+    def model_cleaner(self, models:Optional[ServiceModel]) -> None:
+        [model.cleanup_memory() for model in models.get_models()]
+        self.models.model_list_cleaning()

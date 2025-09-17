@@ -63,3 +63,4 @@ temp/.pytest_cache
 **/**/log-jailbreak
 venv/
 .venv
+/attack_result

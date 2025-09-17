@@ -4,8 +4,9 @@
             {"name": "Felladrin/TinyMistral-248M-Chat-v3",
              "max_new_tokens": 555},
             {"name": "Felladrin/TinyMistral-248M-Chat-v3",
+             "max_new_tokens": 555},
+            {"name": "Felladrin/TinyMistral-248M-Chat-v3",
              "max_new_tokens": 555}
-
         ],
 
     "attacker": {

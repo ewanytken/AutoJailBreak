@@ -134,3 +134,6 @@ class BaseComponent(ABC):
 
     def get_pad(self):
         return self.tokenizer.pad_token_id
+
+    def cleanup_memory(self):
+        del self.model, self.tokenizer
