@@ -1,0 +1,29 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="IceBreakerApp",
+    version="0.0.1",
+    description="Autojailbreak application",
+    packages=find_packages(),
+    install_requires=[
+        'fastapi==0.115.6',
+        'transformers==4.51.3',
+        'torch==2.8.0',
+        'uvicorn==0.32.1',
+        'PyYAML==6.0.1',
+        'requests==2.32.3',
+        'openai==1.76.2',
+        'multipledispatch==0.6.0',
+        'accelerate==1.2.0',
+        'pandas==2.2.3',
+        'pathlib==1.0.1',
+        'numpy==1.26.4',
+        'huggingface-hub==0.30.2',
+        'flask==3.1.2',
+    ],
+    entry_points={
+        'console_scripts': [
+            'iceBreaker=main:main',
+        ],
+    },
+)

@@ -64,3 +64,5 @@ temp/.pytest_cache
 venv/
 .venv
 /attack_result
+/build
+/dist

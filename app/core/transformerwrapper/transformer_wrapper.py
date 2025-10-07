@@ -13,17 +13,9 @@ class TransformerWrapper(BaseComponent):
 
     def __init__(self, model_name: str, max_new_tokens: int, use_cpu_only: bool = False, system_tag: list = None, **kwargs):
 
-        cache_dir_path = Path(__file__).parent.parent.parent.parent / 'config.yaml'
-        with open(cache_dir_path, 'r') as file:
-            cache_dir = yaml.safe_load(file)
-
-        path_to_models = cache_dir['cache_dir']
+        path_to_models = self.get_cache_dir()
 
         model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=path_to_models, **kwargs)
-
-        # config = AutoConfig.from_pretrained(model_name)
-        # model = AutoModelForCausalLM.from_config(config, **kwargs)
-
         model = model.eval()
 
         tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=path_to_models, use_fast=True)
@@ -35,6 +27,13 @@ class TransformerWrapper(BaseComponent):
 
         self.max_new_tokens = max_new_tokens
         super().__init__(model, tokenizer, use_cpu_only)
+
+    def get_cache_dir(self):
+        cache_dir_path = Path(__file__).parent.parent.parent.parent / 'config.yaml'
+        with open(cache_dir_path, 'r') as file:
+            cache_dir = yaml.safe_load(file)
+        path_to_models = cache_dir['cache_dir']
+        return path_to_models
 
     def generate(self, inst_prompt: dict):
 
@@ -72,3 +71,4 @@ class TransformerWrapper(BaseComponent):
             list_of_dict.append(chat)
 
         return list_of_dict
+

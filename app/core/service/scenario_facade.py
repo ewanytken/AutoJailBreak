@@ -111,9 +111,9 @@ class ScenarioFacade:
             else:
                 raise ScenarioParametersError(
                     f"Parameters not valid for any Scenario: PROMPTS - {len(prompts)}, MODELS - {len(self.models)}."
-                    f"Should be 1 attack prompt for 2 or more model, ether "
-                    f"2 attack|evaluator prompt for 3 or more model, ether "
-                    f"3 attack|reattack|evaluator prompt for 4 or more model")
+                    f"Should be 1 [attack] prompt for 2 or more model, ether "
+                    f"2 [attack|evaluator] prompt for 3 or more model, ether "
+                    f"3 [attack|reattack|evaluator] prompt for 4 or more model")
 
         except Exception as err:
             log(f"Exception occurred, scenario don't start: {err}")
