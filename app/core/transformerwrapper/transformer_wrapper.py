@@ -72,3 +72,6 @@ class TransformerWrapper(BaseComponent):
 
         return list_of_dict
 
+    def get_model_name(self) -> str:
+        assert self.tokenizer.name_or_path is not None
+        return self.tokenizer.name_or_path

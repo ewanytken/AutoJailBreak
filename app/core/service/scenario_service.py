@@ -73,6 +73,8 @@ class ScenarioService:
 
             self.max_query -= 1
 
+        result.update({"Attacker's name" : attacker.get_model_name()})
+
         ScenarioService.save_attack_result(result)
         self.model_cleaner()
 
@@ -135,10 +137,12 @@ class ScenarioService:
             log("ATTEMPT REMAIN: {}".format(self.max_query))
 
             result.update({"ATTACK {}".format(self.max_query): "{}".format(response_attack)})
-            result.update({"TARGET {}".format(self.max_query): "{}".format(response_target)})
             result.update({"EVALUATOR {}".format(self.max_query): "{}".format(response_evaluator)})
 
             self.max_query -= 1
+
+        result.update({"Attacker's name" : attacker.get_model_name()})
+        result.update({"Evaluator's name" : evaluator.get_model_name()})
 
         ScenarioService.save_attack_result(result)
         self.model_cleaner()
@@ -263,18 +267,22 @@ class ScenarioService:
 
             self.max_query -= 1
 
+        result.update({"Attacker's name" : attacker.get_model_name()})
+        result.update({"Evaluator's name" : evaluator.get_model_name()})
+        result.update({"Reattacker's name" : reattacker.get_model_name()})
+
         ScenarioService.save_attack_result(result)
         self.model_cleaner()
 
         return result
 
     @staticmethod
-    def save_attack_result(result:Optional[dict]) -> None:
+    def save_attack_result(result: Optional[dict]) -> None:
         # dir_to_save = Path.cwd().parent.parent.parent / 'attack_result'
-        dir_to_save = Path.cwd() / 'attack_result'
+        dir_to_save = Path.cwd() / 'result_multirun'
         dir_to_save.mkdir(exist_ok=True)
 
-        file_name = dir_to_save / f"attack_result_{uuid.uuid4()}.json"
+        file_name = dir_to_save / f"result_{uuid.uuid4()}.json"
         with open(file_name, 'w') as file:
             json.dump(result, file, indent=4)
 

@@ -24,7 +24,7 @@ class BaseComponent(ABC):
         self.model = model
         self.use_cpu_only: Optional[bool] = use_cpu_only
 
-        self.device:Optional[str] = None
+        self.device: Optional[str] = None
 
         self.set_gpu_distribution()
 
@@ -52,8 +52,9 @@ class BaseComponent(ABC):
                         self.device = "cuda:{}".format(gpu_id)
                         self.model.to(self.device)
                         break
-                    else:
-                        self.model = self.multi_gpu()
+
+                if self.device is None:
+                    self.model = self.multi_gpu()
             except:
                 raise GPUFindError
 
@@ -63,7 +64,7 @@ class BaseComponent(ABC):
             log(f"Current device is CPU")
 
     def multi_gpu(self) -> nn.Module:
-
+        log("Multi-GPU mode STARTED")
         model_accelerate: Optional[nn.Module] = None
 
         try:
