@@ -44,11 +44,12 @@ class BaseComponent(ABC):
         if torch.cuda.is_available() and self.use_cpu_only is False:
             try:
                 for gpu_id in range(torch.cuda.device_count()):
-                    free_vram = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory_allocated(gpu_id)
-                    if free_vram > self.get_model_size() * 1.05: # +5% size
+                    vram_not_allocated = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory_allocated(gpu_id)
+                    vram_not_reserved = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory.memory_reserved(gpu_id)
+                    if vram_not_allocated > self.get_model_size() * 1.03 and vram_not_reserved > self.get_model_size() * 1.03: # +3% size
                         log(f"Current CUDA: {gpu_id}")
                         log(f"Model Size: {self.get_model_size()}")
-                        log(f"Free VRAM: {free_vram}")
+                        log(f"Free VRAM: {vram_not_allocated}")
                         self.device = "cuda:{}".format(gpu_id)
                         self.model.to(self.device)
                         break
