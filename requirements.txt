@@ -12,3 +12,4 @@ pathlib==1.0.1
 numpy==1.26.4
 huggingface-hub==0.30.2
 flask==3.1.2
+pynvml==13.0.1
