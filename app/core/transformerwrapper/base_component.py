@@ -52,8 +52,8 @@ class BaseComponent(ABC):
                     vram_not_allocated = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory_allocated(gpu_id)
                     vram_not_reserved = torch.cuda.get_device_properties(gpu_id).total_memory - torch.cuda.memory.memory_reserved(gpu_id)
                     vram_not_placed = info.free # OVERALL FREE MEMORY INCLUDE OTHER APP
-                    if (vram_not_allocated > self.get_model_size() * 1.03 and vram_not_reserved > self.get_model_size() * 1.03
-                            and vram_not_placed > self.get_model_size() * 1.03): # +3% size
+                    if (vram_not_allocated > self.get_model_size() * 1.07 and vram_not_reserved > self.get_model_size() * 1.07
+                            and vram_not_placed > self.get_model_size() * 1.07): # +7% size, 3% sometimes not enough 
                         log(f"Current CUDA: {gpu_id}")
                         log(f"Model Size: {self.get_model_size()}")
                         log(f"Free VRAM: {vram_not_placed}")

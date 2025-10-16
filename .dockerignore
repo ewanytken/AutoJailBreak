@@ -7,3 +7,4 @@ demo
 models
 venv
 .venv
+test_attack_json
