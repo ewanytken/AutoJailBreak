@@ -98,8 +98,10 @@ class JailBreakController:
             http_address = json["handler"]
             mrp = MultiRunPattern(http_address)
 
-            if "direction" in json:
+            if "direction" in json and isinstance(json['direction'], str):
                 mrp.set_patterns(json["direction"])
+            else:
+                mrp.set_patterns(name_of_dir = 'attack_json')
 
             mrp.start_patterns_attack()
             return {"result": "{} patterns upload and complete".format(mrp.get_number_of_pattern())}

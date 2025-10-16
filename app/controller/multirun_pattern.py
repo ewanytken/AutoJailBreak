@@ -17,7 +17,6 @@ class MultiRunPattern:
         self.path_to_attack_pattern:Optional[list] = None
 
     def start_patterns_attack(self) -> None:
-        self.set_patterns()
 
         for pattern in range(self.number_of_pattern):
             log(self.path_to_attack_pattern[pattern])

@@ -42,7 +42,7 @@ class BaseComponent(ABC):
         raise NotImplemented
 
     def set_gpu_distribution(self) -> None:
-
+        log("Memory distribution is working...")
         if torch.cuda.is_available() and self.use_cpu_only is False:
             try:
                 pynvml.nvmlInit()
