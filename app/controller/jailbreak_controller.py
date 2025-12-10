@@ -104,7 +104,10 @@ class JailBreakController:
                 mrp.set_patterns(name_of_dir = 'attack_json')
 
             mrp.start_patterns_attack()
-            return {"result": "{} patterns upload and complete".format(mrp.get_number_of_pattern())}
+            attack_success_ratio = mrp.get_success_attack() / mrp.get_number_of_pattern()
+
+            return {"result": "{} patterns upload and complete".format(mrp.get_number_of_pattern()),
+                    "attack_success_ratio": "Attack Success Ratio: {}".format(attack_success_ratio)}
 
         @self.app.get("/multirunpage", response_class=HTMLResponse)
         async def multirun_page(request: Request):

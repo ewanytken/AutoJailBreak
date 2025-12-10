@@ -15,6 +15,7 @@ class MultiRunPattern:
         self.service_uri:Optional[str] = MultiRunPattern.get_service_uri(handler)
         self.number_of_pattern:Optional[int] = None
         self.path_to_attack_pattern:Optional[list] = None
+        self.success_attack:Optional[int] = 0
 
     def start_patterns_attack(self) -> None:
 
@@ -34,12 +35,22 @@ class MultiRunPattern:
         with open(json_path, 'r') as j:
             json_payload = json.loads(j.read())
         log(json_payload)
-        requests.post(f"{self.service_uri}",
+        response = requests.post(f"{self.service_uri}",
                       json=json_payload,
                       headers={"Content-Type": "application/json"})
 
-    def get_number_of_pattern(self):
+        self.response_handler(response)
+
+    def response_handler(self, response) -> None:
+        response = response.json()
+        if response.get("result").get("SYSTEM") is not None:
+            self.success_attack = self.success_attack + 1
+
+    def get_number_of_pattern(self) -> int:
         return self.number_of_pattern
+
+    def get_success_attack(self) -> int:
+        return self.success_attack
 
     @staticmethod
     def get_service_uri(handler: str) -> str:
