@@ -34,7 +34,9 @@ class MultiRunPattern:
     def request_service(self, json_path) -> None:
         with open(json_path, 'r') as j:
             json_payload = json.loads(j.read())
-        log(json_payload)
+
+        json_payload["attack_file"] = json_path
+
         response = requests.post(f"{self.service_uri}",
                       json=json_payload,
                       headers={"Content-Type": "application/json"})
@@ -62,5 +64,6 @@ class MultiRunPattern:
 
         host = address['address']['host']
         port = address['address']['port']
+
         log("Connection to: http://" + str(host) + ":" + str(port) + "/" + str(handler))
         return "http://" + str(host) + ":" + str(port) + "/" + str(handler)

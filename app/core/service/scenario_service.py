@@ -20,10 +20,13 @@ class ScenarioService:
         self.models = models
         self.prompts = prompts
         self.max_query = max_query
-
+        self.attack_file: Optional[str] = None
 
     def set_max_query(self, max_query):
         self.max_query = max_query
+
+    def set_attack_file(self, attack_file: str):
+        self.attack_file = attack_file
 
     def attacker_to_target(self, additional_question: list = None, use_model_answer: bool = True) -> dict[str, str] | None:
 
@@ -75,7 +78,7 @@ class ScenarioService:
 
         result.update({"Attacker's name" : attacker.get_model_name()})
 
-        ScenarioService.save_attack_result(result)
+        self.save_attack_result(result)
         self.model_cleaner()
 
         return result
@@ -151,7 +154,7 @@ class ScenarioService:
         result.update({"Attacker's name" : attacker.get_model_name()})
         result.update({"Evaluator's name" : evaluator.get_model_name()})
 
-        ScenarioService.save_attack_result(result)
+        self.save_attack_result(result)
         self.model_cleaner()
 
         return result
@@ -278,18 +281,24 @@ class ScenarioService:
         result.update({"Evaluator's name" : evaluator.get_model_name()})
         result.update({"Reattacker's name" : reattacker.get_model_name()})
 
-        ScenarioService.save_attack_result(result)
+        self.save_attack_result(result)
         self.model_cleaner()
 
         return result
 
-    @staticmethod
-    def save_attack_result(result: Optional[dict]) -> None:
+    def save_attack_result(self, result: Optional[dict]) -> None:
         # dir_to_save = Path.cwd().parent.parent.parent / 'attack_result'
         dir_to_save = Path.cwd() / 'result_multirun'
         dir_to_save.mkdir(exist_ok=True)
 
-        file_name = dir_to_save / f"result_{uuid.uuid4()}.json"
+        if self.attack_file is not None:
+            result.update({"Attack_file": "{}".format(self.attack_file)})
+            json_name = Path(self.attack_file).parts[-1]
+        else:
+            json_name = "attack"
+
+        file_name = dir_to_save / f"result_{json_name}_{uuid.uuid4()}.json"
+
         with open(file_name, 'w') as file:
             json.dump(result, file, indent=4)
 

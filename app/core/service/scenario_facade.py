@@ -32,6 +32,8 @@ class ScenarioFacade:
 
         self.dialog: Optional[Dict] = None
 
+        self.attack_file: Optional[str] = None
+
         self.json_parsing()
         self.scenario_selector()
 
@@ -63,6 +65,9 @@ class ScenarioFacade:
         else:
             self.number_of_attempt = 5
 
+        if self.entry_json.get("attack_file") is not None:
+            self.attack_file = self.entry_json["attack_file"]
+
 
     def scenario_selector(self):
 
@@ -81,6 +86,7 @@ class ScenarioFacade:
 
         scenario = ScenarioService(self.models, prompts)
         scenario.set_max_query(self.number_of_attempt)
+        scenario.set_attack_file(self.attack_file)
 
         self.check_to_condition(prompts, scenario)
 
